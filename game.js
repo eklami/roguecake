@@ -1,5 +1,5 @@
-var canvas;
-var ctx;
+var mainCanvas;
+var mainCtx;
 
 var DEV_MODE = true;
 var FPS = 30;
@@ -43,20 +43,20 @@ var webFrame = function() {
         console.log('dropped ' + (updates - 1) + ' frames');
     }
     if (updates > 0) {
-        views[viewIdx].draw(ctx);
+        views[viewIdx].draw(mainCtx);
     }
     requestAnimationFrame(webFrame);
 };
 
 var initGame = function() {
-    canvas = document.createElement('canvas');
-    ctx = canvas.getContext('2d');
-    canvas.width = 960;
-    canvas.height = 540;
+    mainCanvas = document.createElement('canvas');
+    mainCtx = mainCanvas.getContext('2d');
+    mainCanvas.width = 960;
+    mainCanvas.height = 540;
 
-    document.body.appendChild(canvas);
-    ctx.fillStyle = '#fff';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    document.body.appendChild(mainCanvas);
+    mainCtx.fillStyle = '#fff';
+    mainCtx.fillRect(0, 0, mainCtx.canvas.width, mainCtx.canvas.height);
     nextFrameTime = new Date().getTime() - 1;
     webFrame();
     
