@@ -1,4 +1,5 @@
-var CakeView = function() {
+var CakeView = function(gameState) {
+    this.gameState = gameState;
     this.x = 0;
 };
 
