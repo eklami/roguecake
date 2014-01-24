@@ -26,6 +26,10 @@ var space = function() {
     views[viewIdx].space();
 };
 
+var devChangeView = function() {
+    viewIdx = (viewIdx + 1) % views.length;
+};
+
 var webFrame = function() {
     var time = new Date().getTime();
     var updated = false;
@@ -61,4 +65,8 @@ var initGame = function() {
     Mousetrap.bindGlobal('down', downArrow);
     Mousetrap.bindGlobal('up', upArrow);
     Mousetrap.bindGlobal('space', space);
+
+    if (DEV_MODE) {
+        Mousetrap.bindGlobal('v', devChangeView);
+    }
 };
