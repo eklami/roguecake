@@ -1,6 +1,7 @@
 var canvas;
 var ctx;
 
+var DEV_MODE = true;
 var FPS = 30;
 
 var views = [new CakeView(),
@@ -8,6 +9,22 @@ var views = [new CakeView(),
              new NewspaperView()];
              
 var viewIdx = 0;
+
+var leftArrow = function() {
+    views[viewIdx].leftArrow();
+};
+var rightArrow = function() {
+    views[viewIdx].rightArrow();
+};
+var upArrow = function() {
+    views[viewIdx].upArrow();
+};
+var downArrow = function() {
+    views[viewIdx].downArrow();
+};
+var space = function() {
+    views[viewIdx].space();
+};
 
 var webFrame = function() {
     var time = new Date().getTime();
@@ -38,4 +55,10 @@ var initGame = function() {
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     nextFrameTime = new Date().getTime() - 1;
     webFrame();
+    
+    Mousetrap.bindGlobal('left', leftArrow);
+    Mousetrap.bindGlobal('right', rightArrow);
+    Mousetrap.bindGlobal('down', downArrow);
+    Mousetrap.bindGlobal('up', upArrow);
+    Mousetrap.bindGlobal('space', space);
 };
