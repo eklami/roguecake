@@ -4,6 +4,8 @@ var CakeView = function(gameState) {
     this.slotPosition = 0; // float position in FILLINGS
     this.slotSpeed = CakeView.SLOT_SPEED;
     
+    this.stateTime = 0;
+    
     this.iconSprites = [];
     for (var i = 0; i < FILLINGS.length; ++i) {
         this.iconSprites.push(new Sprite(FILLINGS[i].replace(' ', '_') + '.png'));
@@ -16,9 +18,9 @@ CakeView.prototype = new View();
 
 CakeView.SLOT_SPEED = 0.008;
 CakeView.SLOT_COUNT = 20;
-CakeView.SLOT_WIDTH = 80;
-CakeView.SLOT_RECT = new Rect(100, 400, 50, 50 + 64);
-CakeView.SHOWN_SLOTS = Math.ceil(CakeView.SLOT_RECT.width() / CakeView.SLOT_WIDTH) + 2;
+CakeView.SLOT_WIDTH = 70;
+CakeView.SHOWN_SLOTS = 5;
+CakeView.SLOT_RECT = new Rect(100, 100 + CakeView.SLOT_WIDTH * CakeView.SHOWN_SLOTS, 50, 50 + 64);
 
 CakeView.state = {
     RANDOM: 0,
@@ -48,28 +50,49 @@ CakeView.prototype.draw = function(ctx) {
     ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     ctx.save();
     canvasUtil.clipRect(ctx, CakeView.SLOT_RECT);
-    for (var i = 0; i < CakeView.SHOWN_SLOTS; ++i) {
+    ctx.fillStyle = '#eee';
+    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    for (var i = 0; i < CakeView.SHOWN_SLOTS + 3; ++i) {
         var slotIndex = (i + Math.floor(this.slotPosition)) % CakeView.SLOT_COUNT;
         var slotOffset = this.slotPosition - Math.floor(this.slotPosition);
-        this.iconSprites[this.slots[slotIndex]].draw(ctx, (i - CakeView.ease(slotOffset)) * CakeView.SLOT_WIDTH, CakeView.SLOT_RECT.top);
+        this.iconSprites[this.slots[slotIndex]].drawRotated(ctx, (i - CakeView.ease(slotOffset)) * CakeView.SLOT_WIDTH, (CakeView.SLOT_RECT.top + CakeView.SLOT_RECT.bottom) * 0.5);
     }
     ctx.restore();
+    ctx.fillStyle = '#000';
+    ctx.fillRect((CakeView.SLOT_RECT.left + CakeView.SLOT_RECT.right) * 0.5 - 10, CakeView.SLOT_RECT.bottom + 10, 10, 10);
 };
 
 CakeView.prototype.update = function(deltaTimeMillis) {
     this.slotPosition += deltaTimeMillis * this.slotSpeed;
+    this.stateTime += deltaTimeMillis;
     if (this.state === CakeView.state.RANDOM) {
         this.slotSpeed = CakeView.SLOT_SPEED;
     }
-    if (this.state === CakeView.state.SLOWING && this.slotPosition > this.nextSlow) {
-        this.slotSpeed -= CakeView.SLOT_SPEED * 0.25;
-        this.nextSlow += 1;
+    if (this.state === CakeView.state.SLOWING) {
+        if (this.slotPosition > this.nextSlow) {
+            this.slotSpeed -= CakeView.SLOT_SPEED * 0.5;
+            this.nextSlow += 1;
+            if (this.slotSpeed < CakeView.SLOT_SPEED * 0.01) {
+                var slotIndex = (Math.floor(CakeView.SHOWN_SLOTS / 2) + 2 + Math.round(this.slotPosition)) % CakeView.SLOT_COUNT;
+                console.log(FILLINGS[this.slots[slotIndex]]);
+                this.state = CakeView.state.FILLING;
+                this.stateTime = 0;
+            }
+        }
+    }
+    if (this.state === CakeView.state.FILLING) {
+        if (this.stateTime > 2000) {
+            this.state = CakeView.state.RANDOM;
+        }
     }
 };
 
 CakeView.prototype.space = function() {
     if (this.state === CakeView.state.RANDOM) {
-        this.state = CakeView.state.SLOWING;
-        this.nextSlow = Math.ceil(this.slotPosition);
+        if (this.stateTime > 500) {
+            this.state = CakeView.state.SLOWING;
+            this.stateTime = 0;
+            this.nextSlow = Math.ceil(this.slotPosition);
+        }
     }
 };
