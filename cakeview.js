@@ -18,9 +18,11 @@ CakeView.prototype = new View();
 
 CakeView.SLOT_SPEED = 0.008;
 CakeView.SLOT_COUNT = 20;
-CakeView.SLOT_WIDTH = 70;
+CakeView.SLOT_WIDTH = 75;
 CakeView.SHOWN_SLOTS = 5;
-CakeView.SLOT_RECT = new Rect(100, 100 + CakeView.SLOT_WIDTH * CakeView.SHOWN_SLOTS, 50, 50 + 64);
+CakeView.SLOT_RECT = new Rect(480 - CakeView.SLOT_WIDTH * CakeView.SHOWN_SLOTS * 0.5,
+                              480 + CakeView.SLOT_WIDTH * CakeView.SHOWN_SLOTS * 0.5,
+                              50, 50 + 75);
 
 CakeView.state = {
     RANDOM: 0,
@@ -52,10 +54,10 @@ CakeView.prototype.draw = function(ctx) {
     canvasUtil.clipRect(ctx, CakeView.SLOT_RECT);
     ctx.fillStyle = '#eee';
     ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    for (var i = 0; i < CakeView.SHOWN_SLOTS + 3; ++i) {
+    for (var i = 0; i < CakeView.SHOWN_SLOTS + 1; ++i) {
         var slotIndex = (i + Math.floor(this.slotPosition)) % CakeView.SLOT_COUNT;
         var slotOffset = this.slotPosition - Math.floor(this.slotPosition);
-        this.iconSprites[this.slots[slotIndex]].drawRotated(ctx, (i - CakeView.ease(slotOffset)) * CakeView.SLOT_WIDTH, (CakeView.SLOT_RECT.top + CakeView.SLOT_RECT.bottom) * 0.5);
+        this.iconSprites[this.slots[slotIndex]].drawRotated(ctx, (i - CakeView.ease(slotOffset) + 0.5) * CakeView.SLOT_WIDTH + CakeView.SLOT_RECT.left, (CakeView.SLOT_RECT.top + CakeView.SLOT_RECT.bottom) * 0.5);
     }
     ctx.restore();
     ctx.fillStyle = '#000';
@@ -73,7 +75,7 @@ CakeView.prototype.update = function(deltaTimeMillis) {
             this.slotSpeed -= CakeView.SLOT_SPEED * 0.5;
             this.nextSlow += 1;
             if (this.slotSpeed < CakeView.SLOT_SPEED * 0.01) {
-                var slotIndex = (Math.floor(CakeView.SHOWN_SLOTS / 2) + 2 + Math.round(this.slotPosition)) % CakeView.SLOT_COUNT;
+                var slotIndex = (Math.floor(CakeView.SHOWN_SLOTS / 2) + Math.round(this.slotPosition)) % CakeView.SLOT_COUNT;
                 console.log(FILLINGS[this.slots[slotIndex]]);
                 this.state = CakeView.state.FILLING;
                 this.stateTime = 0;
