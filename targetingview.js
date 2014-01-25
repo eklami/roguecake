@@ -46,7 +46,58 @@ TargetingView.prototype.enter = function() {
     this.cameraStopped = false;
 
     this.deliveries = [];
+
+    //this.gameState.cakes[0].fillings=['Booze', 'Gasoline', 'Toothpaste'];
+
 };
+
+TargetingView.prototype.cakeMatches = function(cake, conditions) {
+	//var conditionsOk = new Array(conditions.length);
+	for (var i = 0; i < conditions.length; i++) {
+		var filling = conditions[i];
+		var ok = false;
+		for (var f = 0; f < cake.fillings.length; f++) {
+			if (cake.fillings[f] == filling) ok = true;
+		}
+		if (ok == false) return false;
+	}
+	return true;
+}
+
+TargetingView.prototype.developerSkip = function() {    
+	this.gameState.news = [];
+	this.gameState.news.push(new Article("Developer skipped"));//, new Article("This too")];
+	console.log(this.gameState.news);
+
+
+};
+
+TargetingView.prototype.exit = function() {
+
+	console.log("TargetingView.exit");
+	this.gameState.news = [];
+	var i = 0;
+	for (i = 0; i < this.deliveries.length; i++) {
+		var cake = this.gameState.cakes[i];
+		var country = COUNTRIES[this.deliveries[i]]["name"];
+
+
+		for (var c = 0; c < TRIGGERS.length; c++) {
+			var cond = TRIGGERS[i].conditions;
+			if (this.cakeMatches(cake, cond)) {
+				this.gameState.news.push(new Article(TRIGGERS[i].headline));
+			}
+		}
+
+		this.gameState.news.push(new Article(""+country+" received "+cake["fillings"][0]));
+	}
+
+	console.log(this.gameState.news);
+	if (this.gameState.news.length == 0) this.gameState.news.push(new Article("Developer skipped"));//, new Article("This too")];
+
+
+};
+
 
 
 TargetingView.prototype.leftArrow = function() {
@@ -103,7 +154,6 @@ function sign(x) {
 TargetingView.prototype.isLocationOccupied = function(location) {
 	if (this.deliveries.length == 0) return false;
 	var length = this.deliveries.length;
-	console.log("Length: "+length);
 	for (t = 0; t < length; t++) {
 		if (this.deliveries[t] == location) {
 			return true;
