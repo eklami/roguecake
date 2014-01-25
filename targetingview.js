@@ -41,10 +41,16 @@ TargetingView.prototype.enter = function() {
 
 
     this.scale = 2;
+
+    this.selectedCake = 0;
+    this.cameraStopped = false;
+
+    this.deliveries = [];
 };
 
 
 TargetingView.prototype.leftArrow = function() {
+	this.cameraStopped = false;
 	this.selectedPoint = Math.abs((this.selectedPoint - 1) % COUNTRIES.length);
 	this.previousPositionX = this.positionX;
 	this.previousPositionY = this.positionY;
@@ -54,6 +60,7 @@ TargetingView.prototype.leftArrow = function() {
 	//this.targetPositionX += 100;
 };
 TargetingView.prototype.rightArrow = function() {
+	this.cameraStopped = false;
 	this.selectedPoint = Math.abs((this.selectedPoint + 1) % COUNTRIES.length);
 	this.previousPositionX = this.positionX;
 	this.previousPositionY = this.positionY;
@@ -62,24 +69,69 @@ TargetingView.prototype.rightArrow = function() {
 	//this.targetPositionX -= 100;
 };
 
+TargetingView.prototype.space = function() {
+	if (this.cameraStopped) {
+		var delivered = false;
+		console.log(""+this.deliveries+"\n"+this.selectedPoint);
+		for (i = 0; i < this.deliveries.length; i++) {
+			if (this.deliveries[i] == this.selectedPoint) {
+				console.log("Delivered!");
+				delivered = true;
+				this.deliveries[i] = undefined;
+				this.selectedCake = i;
+			}
+		}
+		console.log("Delivered: "+delivered);
+		if (delivered == false) {
+			this.deliveries[this.selectedCake] = this.selectedPoint;
+			for (i = this.selectedCake; i < this.selectedCake + 3; i++) {
+				if (this.deliveries[i % 3] === undefined) {
+					this.selectedCake = i % 3;
+				} else {
+				}
+			}
+		}
+	}
+};
+
+
 
 function sign(x) {
     return typeof x === 'number' ? x ? x < 0 ? -1 : 1 : x === x ? 0 : NaN : NaN;
 }
 
+TargetingView.prototype.isLocationOccupied = function(location) {
+	if (this.deliveries.length == 0) return false;
+	var length = this.deliveries.length;
+	console.log("Length: "+length);
+	for (t = 0; t < length; t++) {
+		if (this.deliveries[t] == location) {
+			return true;
+		}
+	}
+	return false;
+
+}
+
+
+
 TargetingView.prototype.update = function(deltaTimeMillis) {
+	//if (this.selectedCake == 3) return true;
+	if (this.deliveries.length == 3) return true;
+
     if (this.positionX != this.targetPositionX) {
-    	speed = Math.min(Math.abs(this.targetPositionX - this.positionX), 15 * deltaTimeMillis / (1000 / 30));
+    	speed = Math.min(Math.abs(this.targetPositionX - this.positionX), 25 * deltaTimeMillis / (1000 / 30));
     	this.positionX += sign(this.targetPositionX - this.positionX) * speed;
     }
     if (this.positionY != this.targetPositionY) {
-    	speed = Math.min(Math.abs(this.targetPositionY - this.positionY), 15 * deltaTimeMillis / (1000 / 30));
+    	speed = Math.min(Math.abs(this.targetPositionY - this.positionY), 25 * deltaTimeMillis / (1000 / 30));
     	this.positionY += sign(this.targetPositionY - this.positionY) * speed;
     }
     var totalDist = Math.sqrt((this.previousPositionX - this.targetPositionX) * (this.previousPositionX - this.targetPositionX) +
     	(this.previousPositionY - this.targetPositionY) * (this.previousPositionY - this.targetPositionY));
     var dist = Math.sqrt((this.positionX - this.targetPositionX) * (this.positionX - this.targetPositionX) +
     	(this.positionY - this.targetPositionY) * (this.positionY - this.targetPositionY));
+    if (dist <= 0) this.cameraStopped = true;
     if (totalDist > 0) {
     	var frac = dist / totalDist;
     	if (frac > 0.5) frac = 0.5 - (frac - 0.5);
@@ -92,8 +144,9 @@ TargetingView.prototype.drawMap = function(ctx) {
 	ctx.save();
 		ctx.drawImage(this.img, 0, 0);
 
-		ctx.fillStyle = '#ff00ff';
 	    for (i = 0; i < COUNTRIES.length; i++) {
+			ctx.fillStyle = '#ff00ff';
+			if (this.isLocationOccupied(i)) ctx.fillStyle = '#00ff00';
     		px = COUNTRIES[i]["mapLocation"][0];
     		py = COUNTRIES[i]["mapLocation"][1];
     		ctx.save();
@@ -197,5 +250,20 @@ TargetingView.prototype.draw = function(ctx) {
 	screen_Y = this.toScreenY(this.positionY + this.img.height, ctx);
 	ctx.fillText("posY: "+ty+" "+screen_Y,0,90);
 	ctx.fillText("TARGET: "+this.targetPositionX+","+this.targetPositionY,0,120);
+
+	for (i = 0; i < this.gameState.cakes.length; i++) {
+		var text = "Cake "+(i+1)+". ";
+		for (c = 0; c < this.gameState.cakes[i]["fillings"].length; c++) {
+			if (c != 0) text += " - ";
+			text += this.gameState.cakes[i]["fillings"][c];
+		}
+		if (this.deliveries[i] === undefined) {
+		} else {
+			text += " -> " + COUNTRIES[this.deliveries[i]]["name"];
+		}
+		ctx.textBaseline = "bottom";
+		if (i == this.selectedCake) ctx.fillStyle = "ffff00"; else ctx.fillStyle = "00ffff";
+		ctx.fillText(text, 0, ctx.canvas.height - 30 * i);
+	}
 
 };
