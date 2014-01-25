@@ -154,7 +154,7 @@ var GameState = function() {
     this.cakes = [];
     // List of Articles, filled in by TargetingView, cleared by NewspaperView
     this.news = [
-        new Article("Food waste illegalized"),
+        new Article("Food waste illegalized", "From this day onwards, neither consumers nor food manufacturers are allowed to throw away edible things. Anything passable as human nutrition needs to be distributed and eaten. Analysts expect this to be extremely detrimental to innovation in the gastronomic industries."),
         new Article("Demand of cakes increasing worldwide"),
     ];
     // List of strings, filled in by TargetingView based on filled conditions.
@@ -223,9 +223,10 @@ var initGame = function() {
     views = [new NewspaperView(gameState),
              new CakeView(gameState),
              new TargetingView(gameState)];
+    views[0].enter();
 
     cwrap = document.createElement('div');
-    cwrap.id = 'canvaswrap';         
+    cwrap.id = 'canvaswrap';
     canvaswrap.appendChild(mainCanvas);
     mainCtx.fillStyle = '#fff';
     mainCtx.fillRect(0, 0, mainCtx.canvas.width, mainCtx.canvas.height);

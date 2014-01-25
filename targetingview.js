@@ -14,7 +14,7 @@ var TargetingView = function(gameState) {
     this.cursorSprite = new Sprite("cursor_center.png");
     this.cursorHorizontal = new Sprite("cursor_horizontal.png");
     this.cursorVertical = new Sprite("cursor_vertical.png");
-
+    this.overlaySprite = new Sprite('map_overlay.png');
     
     this.canvasWidth = 0;
 
@@ -195,17 +195,17 @@ TargetingView.prototype.drawMap = function(ctx) {
 		ctx.drawImage(this.img, 0, 0);
 
 	    for (i = 0; i < COUNTRIES.length; i++) {
-			ctx.fillStyle = '#ff00ff';
+			ctx.fillStyle = '#fb8';
 			if (this.isLocationOccupied(i)) ctx.fillStyle = '#00ff00';
     		px = COUNTRIES[i]["mapLocation"][0];
     		py = COUNTRIES[i]["mapLocation"][1];
     		ctx.save();
     		ctx.translate(px, py);
 			ctx.fillRect(-5, -5,10,10);
-			ctx.font = "12pt Helvetica";
-			ctx.textAlign = "center";
+			ctx.font = "16px digital";
+			ctx.textAlign = "left";
 			ctx.textBaseline = "hanging";
-			ctx.fillText(COUNTRIES[i]["name"], 0, 10);
+			ctx.fillText(COUNTRIES[i]["name"], 22, 2);
 
 			ctx.restore();
 		}
@@ -221,6 +221,34 @@ TargetingView.prototype.toScreenX = function(worldX, ctx) {
 TargetingView.prototype.toScreenY = function(worldY, ctx) {
 	return worldY * this.scale + ctx.canvas.height * 0.5;
 }
+
+TargetingView.prototype.drawDecorText = function(ctx) {
+	var tx = this.positionX + 100.0;
+	var screen_X = this.toScreenX(tx, ctx);
+	var ty = this.positionY + 100.0;
+	var screen_Y = this.toScreenY(ty, ctx);
+ 	/*ctx.save();
+		ctx.translate(screen_X, screen_Y)
+		ctx.fillStyle = '#0000ff';
+		ctx.fillRect(- 5, - 5, 10, 10);
+	ctx.restore();*/
+
+    ctx.save();
+    ctx.translate(20, 20);
+    ctx.globalAlpha = 0.4;
+    ctx.font = '12px digital';
+	ctx.textAlign = "left";
+	ctx.textBaseline = "top";
+    var rowH = 15;
+	ctx.fillText("tx: "+tx+" "+Math.round(screen_X),0,0);
+	ctx.fillText("ty: "+ty+" "+Math.round(screen_Y),0,rowH);
+	screen_Y = this.toScreenY(this.positionY, ctx);
+	ctx.fillText("posX: "+ty+" "+Math.round(screen_X),0,rowH * 2);
+	screen_Y = this.toScreenY(this.positionY + this.img.height, ctx);
+	ctx.fillText("posY: "+ty+" "+Math.round(screen_Y),0,rowH * 3);
+	ctx.fillText("TARGET: "+this.targetPositionX+","+this.targetPositionY,0,rowH * 4);
+    ctx.restore();
+};
 
 TargetingView.prototype.draw = function(ctx) {
 
@@ -262,6 +290,9 @@ TargetingView.prototype.draw = function(ctx) {
 		this.drawMap(ctx);
 		ctx.restore();
 	}
+    
+    // screen overlay effect
+    this.overlaySprite.draw(ctx, 0, 0);
 
 	//Targeting cursor
 	ctx.restore();
@@ -280,40 +311,19 @@ TargetingView.prototype.draw = function(ctx) {
 	this.cursorVertical.drawRotatedNonUniform(ctx, ctx.canvas.width * 0.5, ctx.canvas.height * 0.5 - ch - lineWidth * 0.5, 0, 1, scaleRatio);
 	ctx.restore();
 
-	var tx = this.positionX + 100.0;
-	var screen_X = this.toScreenX(tx, ctx);
-	var ty = this.positionY + 100.0;
-	var screen_Y = this.toScreenY(ty, ctx);
- 	/*ctx.save();
-		ctx.translate(screen_X, screen_Y)
-		ctx.fillStyle = '#0000ff';
-		ctx.fillRect(- 5, - 5, 10, 10);
-	ctx.restore();*/
-
-    ctx.font = '24px digital';
-	ctx.textAlign = "left";
-	ctx.textBaseline = "top";
-	ctx.fillText("tx: "+tx+" "+screen_X,0,0);
-	ctx.fillText("ty: "+ty+" "+screen_Y,0,30);
-	screen_Y = this.toScreenY(this.positionY, ctx);
-	ctx.fillText("posY: "+ty+" "+screen_Y,0,60);
-	screen_Y = this.toScreenY(this.positionY + this.img.height, ctx);
-	ctx.fillText("posY: "+ty+" "+screen_Y,0,90);
-	ctx.fillText("TARGET: "+this.targetPositionX+","+this.targetPositionY,0,120);
+    this.drawDecorText(ctx);
 
 	for (i = 0; i < this.gameState.cakes.length; i++) {
-		var text = "Cake "+(i+1)+". ";
-		for (c = 0; c < this.gameState.cakes[i]["fillings"].length; c++) {
-			if (c != 0) text += " - ";
-			text += this.gameState.cakes[i]["fillings"][c];
-		}
+		var text = "Cake "+(i+1)+": ";
+        text += this.gameState.cakes[i].fillings.join(' - ');
 		if (this.deliveries[i] === undefined) {
 		} else {
 			text += " -> " + COUNTRIES[this.deliveries[i]]["name"];
 		}
+        ctx.font = '25px digital';
+        ctx.textAlign = 'left';
 		ctx.textBaseline = "bottom";
 		if (i == this.selectedCake) ctx.fillStyle = "ffff00"; else ctx.fillStyle = "00ffff";
-		ctx.fillText(text, 0, ctx.canvas.height - 30 * i);
+		ctx.fillText(text, 30, ctx.canvas.height - 30 * i - 20);
 	}
-
 };

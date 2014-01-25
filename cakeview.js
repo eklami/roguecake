@@ -78,30 +78,35 @@ CakeView.prototype.selectFilling = function(fillingIndex) {
     this.textAnimTime = 0;
 };
 
-CakeView.prototype.chooseCake = function(fillingIndex) {
+CakeView.prototype.chooseCake = function(fillingIndex, createEffects) {
+    if (createEffects === undefined) {
+        createEffects = true;
+    }
     this.gameState.cakes[this.currentCake].fillings.push(FILLINGS[fillingIndex]);
     this.changeState(CakeView.state.FILLING);
     //this.logCakes();
-    for (var i = 0; i < 20; ++i) {
-        var x = (CakeView.SLOT_RECT.left + CakeView.SLOT_RECT.right) * 0.5 + (Math.random() - 0.5) * 20;
-        var y = CakeView.SLOT_RECT.bottom + 60;
-        var pos = new Vec2(x, y);
-        var vel = new Vec2(0, 1200);
-        var acc = new Vec2(0, 500);
-        var size = 20;
-        var color = FILLING_COLORS[fillingIndex];
-        var lifeSeconds = 1;
-        var createsSplash = true;
-        var splashCount = 3;
-        var splashAngle = Math.PI * 1.5;
-        var splashAngleVariation = Math.PI * 0.7;
-        var splashVel = 300;
-        var splashVelVariation = 260;
-        var part = new Particle(pos, vel, acc, size, color, lifeSeconds,
-                            createsSplash, splashCount,
-                            splashAngle, splashAngleVariation,
-                            splashVel, splashVelVariation);
-        this.particleSystem.particles.push(part);
+    if (createEffects) {
+        for (var i = 0; i < 20; ++i) {
+            var x = (CakeView.SLOT_RECT.left + CakeView.SLOT_RECT.right) * 0.5 + (Math.random() - 0.5) * 20;
+            var y = CakeView.SLOT_RECT.bottom + 60;
+            var pos = new Vec2(x, y);
+            var vel = new Vec2(0, 1200);
+            var acc = new Vec2(0, 500);
+            var size = 20;
+            var color = FILLING_COLORS[fillingIndex];
+            var lifeSeconds = 1;
+            var createsSplash = true;
+            var splashCount = 3;
+            var splashAngle = Math.PI * 1.5;
+            var splashAngleVariation = Math.PI * 0.7;
+            var splashVel = 300;
+            var splashVelVariation = 260;
+            var part = new Particle(pos, vel, acc, size, color, lifeSeconds,
+                                createsSplash, splashCount,
+                                splashAngle, splashAngleVariation,
+                                splashVel, splashVelVariation);
+            this.particleSystem.particles.push(part);
+        }
     }
 };
 
@@ -314,7 +319,10 @@ CakeView.prototype.leftArrow = function() {
 
 CakeView.prototype.developerSkip = function() {
     while (!this.cakeFull(this.currentCake)) {
-        this.chooseCake(FILLINGS[Math.floor(Math.random() * FILLINGS.length) % FILLINGS.length]);
+        this.chooseCake(Math.floor(Math.random() * FILLINGS.length) % FILLINGS.length, false);
+        if (this.cakeFull(this.currentCake)) {
+            this.right();
+        }
     }
     this.logCakes();
 };
