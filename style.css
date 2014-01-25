@@ -4,9 +4,43 @@ body {
 canvas {
   display: block;
   margin: auto;
+  position:absolute;
+  top:0;
+left:0;
 }
-@font-face
-{
-  font-family: digital;
-  src: url(Assets/digital-7-mono-italic.ttf);
+
+#newspaper {
+	position: absolute;
+	left:200px;
+	top:50px;
+	width:300px;
+	height:400px;
+	background-color:#666;
+	transform:rotate(10deg);
+	-ms-transform:rotate(10deg); /* IE 9 */
+	-webkit-transform:rotate(10deg); /* Safari and Chrome */
+}
+
+#newsviewd {
+position:absolute;
+top:0;
+left:0;
+z-index:1;
+background-image:url('Assets/News_layout.png');
+}
+
+#headline {
+color:red;
+}
+
+#canvaswrap{
+position:relative;
+margin:auto;
+display: block;
+}
+
+#canvaswrap, #newsviewd {
+width:960;
+height:540;
+
 }

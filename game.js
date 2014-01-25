@@ -92,9 +92,8 @@ var upArrow = function() {
 var downArrow = function() {
     views[viewIdx].downArrow();
 };
-var space = function(e) {
+var space = function() {
     views[viewIdx].space();
-    e.preventDefault();
 };
 
 var devChangeView = function() {
@@ -120,6 +119,7 @@ var webFrame = function() {
 };
 
 var initGame = function() {
+
     mainCanvas = document.createElement('canvas');
     mainCtx = mainCanvas.getContext('2d');
     mainCanvas.width = 960;
@@ -130,7 +130,9 @@ var initGame = function() {
              new CakeView(gameState),
              new TargetingView(gameState)];
 
-    document.body.appendChild(mainCanvas);
+    cwrap = document.createElement('div');
+    cwrap.id = 'canvaswrap';         
+    canvaswrap.appendChild(mainCanvas);
     mainCtx.fillStyle = '#fff';
     mainCtx.fillRect(0, 0, mainCtx.canvas.width, mainCtx.canvas.height);
     nextFrameTime = new Date().getTime() - 1;

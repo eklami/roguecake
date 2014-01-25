@@ -1,32 +1,48 @@
-//Mikä kakku, mihin -> seuraus
-var NewspaperView = function(contentarray, country ) {
-this.contentarray = contentarray;
+var NewspaperView = function(triggersa, country ) {
+this.triggersa = triggersa;
 this.country = country;
+
+
+addElement();
+
 };
 
 NewspaperView.prototype = new View();
 
 NewspaperView.prototype.draw = function(ctx) {
 
-
-	ctx.fillStyle = '#888';
-	ctx.fillRect(70,70,600,600);
-	ctx.fillStyle = '#333';
+}
 
 
-	ctx.font="29px Georgia";
-	ctx.fillText( ResultsArray[0].headline, 120,100 ,100);
+function addElement () {
 
-	ctx.font="20px Georgia";
-	ctx.fillText( ResultsArray[0].text, 120,140);
+var cwrap = document.getElementById("canvaswrap");
+var newD = document.createElement("div");
 
-};
+newD.id = 'newsviewd';
+cwrap.appendChild(newD);
+
+var newDiv = document.createElement("div");
+newDiv.id = 'newspaper';
+
+var headline = document.createElement("h1");
+var headline = document.createTextNode(testTRIGGERS2[0].headline);
+
+Newsheadline.id = 'headline';
+newDiv.appendChild(Newsheadline); //add the text node to the newly created div.
+
+newD.appendChild(newDiv);
+newDiv.appendChild(Newsheadline);
+}
 
 
-var ResultsArray = [
- { "headline": "Headline1", "img": "img/catimg.jpg", "text": "Somethingsomething Somethingsomething Somethingsomething" },
- { "headline": "Headline2", "img": "npimg.png", "text": "Somethingsomething" },
- { "headline": "Headline3", "img": "npimg.png", "text": "Somethingsomething" },
- { "headline": "Headline4", "img": "npimg.png", "text": "Somethingsomething" },
- { "headline": "Headline5", "img": "npimg.png", "text": "Somethingsomething" }
-]
+
+var testTRIGGERS2 = [
+{
+    conditions: ['Gasoline', 'Booze', 'Toothpaste'],
+    result: 'nervepoison',
+    globalResult: false,
+    headline: 'Cake became nerve poison while being transported',
+    profit: 10,
+    priority: 1
+}]
