@@ -132,7 +132,7 @@ Cake.prototype.drawList = function(ctx, centerX, topY, mainColor, edgeColor, spa
     for (var i = 0; i < this.fillings.length; ++i) {
         var shownText = this.fillings[i];
         var textX = centerX;
-        var textY = topY + i * spacing;
+        var textY = topY + (CakeView.FILLINGS_PER_CAKE - 1 - i) * spacing;
         ctx.fillStyle = edgeColor;
         ctx.fillText(shownText, textX + 1, textY + 1);
         ctx.fillText(shownText, textX - 1, textY + 1);
