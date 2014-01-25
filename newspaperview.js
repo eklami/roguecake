@@ -1,6 +1,7 @@
 var NewspaperView = function(gameState) {
     this.gameState = gameState;
     this.addElements();
+    this.music = new Audio('music_morning', true);
 };
 
 NewspaperView.prototype = new View();
@@ -9,12 +10,14 @@ NewspaperView.prototype.draw = function(ctx) {
 };
 
 NewspaperView.prototype.enter = function() {
+    this.music.play();
     this.headline.textContent = this.gameState.news[0].headline;
     this.article.textContent = this.gameState.news[0].text ? this.gameState.news[0].text : '';
     this.newsView.style.display = 'block';
 };
 
 NewspaperView.prototype.exit = function() {
+    this.music.stop();
     this.newsView.style.display = 'none';
 };
 

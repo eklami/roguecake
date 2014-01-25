@@ -85,6 +85,8 @@ var CakeView = function(gameState) {
     this.arrowGlowSprite = new Sprite('arrowglow.png');
     CakeView.cakeLayerSprite = new Sprite('cake_layer.png');
     CakeView.candleSprite = new Sprite('candle.png');
+    
+    this.music = new Audio('music_slot_loop', true);
 
     this.particleSystem = new ParticleSystem(540 - CakeView.CONVEYOR_HEIGHT, this);
 
@@ -133,6 +135,11 @@ CakeView.prototype.enter = function() {
     this.conveyorPosition = CakeView.CAKE_COUNT + 2;
     this.currentCake = Math.floor((CakeView.CAKE_COUNT - 1) / 2);
     this.arrowAnim = 0;
+    this.music.play();
+};
+
+CakeView.prototype.exit = function() {
+    this.music.stop();
 };
 
 CakeView.prototype.randomizeSlots = function() {
