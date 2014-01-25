@@ -16,20 +16,56 @@ var FILLINGS = ['Baby seal',
                 'Toothpaste',
 ];
 
-var COUNTRIES = [{
+var COUNTRIES = [
+{
+    name: 'Yankia',
+    shortName: 'us',
+    mapLocation: [300, 428],
+},
+{
+    name: 'Cartellia',
+    shortName: 'mex',
+    mapLocation: [440, 564],
+},
+{
+    name: 'Turquoiseland',
+    shortName: 'greenland',
+    mapLocation: [748, 250],
+},
+{
+    name: 'Hippo Coast',
+    shortName: 'africa',
+    mapLocation: [870, 615],
+},
+{
+    name: 'The Topseas',
+    shortName: 'nl',
+    mapLocation: [953, 366],
+},
+{
+    name: 'Tailland',
+    shortName: 'fi',
+    mapLocation: [1043, 300],
+},
+{
+    name: 'Svetlania',
+    shortName: 'ru',
+    mapLocation: [1154, 333],
+},
+{
     name: 'Southwest Kaunistatud',
     shortName: 'sk',
-    mapLocation: [100, 100],
+    mapLocation: [1566, 413],
 },
 {
     name: 'FU-Shima',
     shortName: 'fushima',
-    mapLocation: [400, 200],
+    mapLocation: [1660, 444],
 },
 {
-    name: 'FooBar',
-    shortName: 'foobar',
-    mapLocation: [1900, 950],
+    name: 'St. Roos & Koalas',
+    shortName: 'au',
+    mapLocation: [1737, 842],
 }
 ];
 
