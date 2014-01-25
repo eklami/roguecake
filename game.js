@@ -25,7 +25,13 @@ var COUNTRIES = [{
     name: 'FU-Shima',
     shortName: 'fushima',
     mapLocation: [400, 200],
-}];
+},
+{
+    name: 'FooBar',
+    shortName: 'foobar',
+    mapLocation: [1900, 950],
+}
+];
 
 var TRIGGERS = [
 {
