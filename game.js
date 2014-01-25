@@ -295,7 +295,8 @@ var initGame = function() {
     var gameState = new GameState();
     views = [new NewspaperView(gameState),
              new CakeView(gameState),
-             new TargetingView(gameState)];
+             new TargetingView(gameState),
+             new IntroView(gameState)];
     views[0].enter();
 
     cwrap = document.createElement('div');
