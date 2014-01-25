@@ -1,4 +1,4 @@
-var CakeLayer = function(maxY, fillingColor) {
+var CakeLayer = function(maxY, fillingColor, isCandle) {
     this.y = CakeView.SLOT_RECT.bottom + 60;
     this.maxY = maxY;
     this.down = false;
@@ -6,6 +6,10 @@ var CakeLayer = function(maxY, fillingColor) {
     this.splashes = [];
     this.fillingSpread = 0.0;
     this.lastDrawX = 0;
+    this.isCandle = isCandle;
+    if (this.isCandle) {
+        this.y -= 1000;
+    }
 };
 
 CakeLayer.prototype.update = function(deltaTMillis) {
@@ -23,20 +27,24 @@ CakeLayer.prototype.update = function(deltaTMillis) {
 };
 
 CakeLayer.prototype.draw = function(ctx, x) {
-    CakeView.cakeLayerSprite.drawRotated(ctx, x, this.y);
-    this.lastDrawX = x;
-    ctx.fillStyle = this.fillingColor;
-    ctx.globalAlpha = 1.0;
-    ctx.beginPath();
-    ctx.ellipse(x, this.y - 8, 58 * this.fillingSpread, 23 * this.fillingSpread, 0, 0, Math.PI * 2, false);
-    ctx.fill();
-    ctx.globalAlpha = 0.8;
-    for (var i = 0; i < this.splashes.length; ++i) {
+    if (this.isCandle) {
+        CakeView.candleSprite.drawRotated(ctx, x, this.y);
+    } else {
+        CakeView.cakeLayerSprite.drawRotated(ctx, x, this.y);
+        this.lastDrawX = x;
+        ctx.fillStyle = this.fillingColor;
+        ctx.globalAlpha = 1.0;
         ctx.beginPath();
-        ctx.ellipse(x + this.splashes[i].x, this.y + this.splashes[i].y, 20, 13, 0, 0, Math.PI * 2, false);
+        ctx.ellipse(x, this.y - 8, 58 * this.fillingSpread, 23 * this.fillingSpread, 0, 0, Math.PI * 2, false);
         ctx.fill();
+        ctx.globalAlpha = 0.8;
+        for (var i = 0; i < this.splashes.length; ++i) {
+            ctx.beginPath();
+            ctx.ellipse(x + this.splashes[i].x, this.y + this.splashes[i].y, 20, 13, 0, 0, Math.PI * 2, false);
+            ctx.fill();
+        }
+        ctx.globalAlpha = 1.0;
     }
-    ctx.globalAlpha = 1.0;
 };
 
 CakeLayer.prototype.splash = function(x, y) {
@@ -63,7 +71,10 @@ var CakeView = function(gameState) {
     this.conveyorSprite = new Sprite('production_line.png');
     this.bgSprite = new Sprite('cake_background.png');
     this.listBgSprite = new Sprite('digitalsign.png');
+    this.arrowSprite = new Sprite('arrow.png');
+    this.arrowGlowSprite = new Sprite('arrowglow.png');
     CakeView.cakeLayerSprite = new Sprite('cake_layer.png');
+    CakeView.candleSprite = new Sprite('candle.png');
 
     this.particleSystem = new ParticleSystem(540 - CakeView.CONVEYOR_HEIGHT, this);
 
@@ -111,6 +122,7 @@ CakeView.prototype.enter = function() {
     this.state = CakeView.state.RANDOM;
     this.conveyorPosition = CakeView.CAKE_COUNT + 2;
     this.currentCake = Math.floor((CakeView.CAKE_COUNT - 1) / 2);
+    this.arrowAnim = 0;
 };
 
 CakeView.prototype.randomizeSlots = function() {
@@ -134,6 +146,9 @@ CakeView.prototype.selectFilling = function(fillingIndex) {
 CakeView.prototype.splashCallback = function(x, y) {
     var currentLayers = this.cakesLayers[this.currentCake];
     var i = currentLayers.length - 1;
+    while (i > 0 && currentLayers[i].isCandle) {
+        --i;
+    }
     currentLayers[i].splash(x, y);
 };
 
@@ -147,7 +162,10 @@ CakeView.prototype.chooseCake = function(fillingIndex, createEffects) {
     //this.logCakes();
     if (createEffects) {
         var maxY = 540 - CakeView.CONVEYOR_HEIGHT - 5 - this.cakesLayers[this.currentCake].length * 17;
-        this.cakesLayers[this.currentCake].push(new CakeLayer(maxY, FILLING_COLORS[fillingIndex]));
+        this.cakesLayers[this.currentCake].push(new CakeLayer(maxY, FILLING_COLORS[fillingIndex], false));
+        if (this.cakesLayers[this.currentCake].length === CakeView.FILLINGS_PER_CAKE) {
+            this.cakesLayers[this.currentCake].push(new CakeLayer(maxY - 22, FILLING_COLORS[fillingIndex], true))
+        }
         this.particleSystem.groundY = maxY - 5;
         for (var i = 0; i < 30; ++i) {
             var x = centerX + (Math.random() - 0.5) * 80;
@@ -263,6 +281,19 @@ CakeView.prototype.drawConveyor = function(ctx) {
         if (Math.abs(this.conveyorPosition - this.currentCake) < 0.2) {
             this.gameState.cakes[i].drawList(ctx, listPos.x, listPos.y, '#000', '#555');
         }
+        var arrowY = platePos.y - 90 - Math.sin(this.arrowAnim) * 5;
+        if (this.acceptsMoves() && this.currentCake === i) {
+            this.arrowSprite.drawRotated(ctx, listPos.x + CakeView.PLATE_DISTANCE * 0.5, arrowY);
+            ctx.globalAlpha = Math.sin(this.arrowAnim) * 0.5 + 0.5;
+            this.arrowGlowSprite.drawRotated(ctx, listPos.x + CakeView.PLATE_DISTANCE * 0.5, arrowY);
+            ctx.globalAlpha = 1.0;
+        }
+        if (this.acceptsMoves() && this.currentCake === i) {
+            this.arrowSprite.drawRotatedNonUniform(ctx, listPos.x - CakeView.PLATE_DISTANCE * 0.5, arrowY, 0, -1.0, 1.0);
+            ctx.globalAlpha = Math.sin(this.arrowAnim) * 0.5 + 0.5;
+            this.arrowGlowSprite.drawRotatedNonUniform(ctx, listPos.x - CakeView.PLATE_DISTANCE * 0.5, arrowY, 0, -1.0, 1.0);
+            ctx.globalAlpha = 1.0;
+        }
         for (var j = 0; j < this.cakesLayers[i].length; j++) {
             if (this.cakesLayers[i][j].down) {
                 this.cakesLayers[i][j].draw(ctx, platePos.x);
@@ -327,7 +358,11 @@ CakeView.prototype.update = function(deltaTimeMillis) {
         }
     }
     if (this.state === CakeView.state.FILLING) {
-        if (this.stateTime > 800) {
+        var currentLayers = this.cakesLayers[this.currentCake];
+        if (currentLayers[currentLayers.length - 1].down && this.stateTime < 9000) {
+            this.stateTime = 10000;
+        }
+        if (this.stateTime > 10250) {
             this.changeState(CakeView.state.RANDOM);
             this.text = '';
             if (this.cakeFull(this.currentCake)) {
@@ -349,6 +384,8 @@ CakeView.prototype.update = function(deltaTimeMillis) {
     this.animateText(deltaTimeMillis);
 
     this.particleSystem.update(deltaTimeMillis);
+    
+    this.arrowAnim += deltaTimeMillis * 0.005;
 
     if (this.state === CakeView.state.FINISH && this.stateTime > 1000) {
         return true;
@@ -384,14 +421,18 @@ CakeView.prototype.right = function() {
     this.animateCakeChange();
 };
 
+CakeView.prototype.acceptsMoves = function() {
+    return this.state === CakeView.state.CHOOSECAKE;
+}
+
 CakeView.prototype.rightArrow = function() {
-    if (this.state !== CakeView.state.FILLING) {
+    if (this.acceptsMoves()) {
         this.right();
     }
 };
 
 CakeView.prototype.leftArrow = function() {
-    if (this.state !== CakeView.state.FILLING) {
+    if (this.acceptsMoves()) {
         this.currentCake = (this.currentCake - 1 + CakeView.CAKE_COUNT) % CakeView.CAKE_COUNT;
         var moves = 1;
         while (this.cakeFull(this.currentCake) && moves < CakeView.CAKE_COUNT) {
