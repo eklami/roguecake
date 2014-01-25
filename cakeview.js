@@ -72,7 +72,7 @@ CakeView.prototype.draw = function(ctx) {
     }
     ctx.restore();
 
-    ctx.fillStyle = '#f8a';
+    
     ctx.font = '40px digital';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'top';
@@ -81,7 +81,15 @@ CakeView.prototype.draw = function(ctx) {
         shownText = this.text.substring(0, this.textHidden) + ' ' + this.text.substring(this.textHidden + 1, this.text.length);
     }
     
-    ctx.fillText(shownText, (CakeView.SLOT_RECT.left + CakeView.SLOT_RECT.right) * 0.5, CakeView.SLOT_RECT.bottom + 10);
+    var textX = (CakeView.SLOT_RECT.left + CakeView.SLOT_RECT.right) * 0.5;
+    var textY = CakeView.SLOT_RECT.bottom + 10;
+    ctx.fillStyle = '#b05';
+    ctx.fillText(shownText, textX + 1, textY + 1);
+    ctx.fillText(shownText, textX - 1, textY + 1);
+    ctx.fillText(shownText, textX + 1, textY - 1);
+    ctx.fillText(shownText, textX - 1, textY - 1);
+    ctx.fillStyle = '#f8a';
+    ctx.fillText(shownText, textX, textY);
 };
 
 CakeView.prototype.update = function(deltaTimeMillis) {
