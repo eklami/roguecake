@@ -257,6 +257,9 @@ var space = function() {
 var changeView = function() {
     views[viewIdx].exit();
     viewIdx = (viewIdx + 1) % views.length;
+    if (viewIdx === 0) {
+        ++viewIdx;
+    }
     views[viewIdx].enter();
 };
 
@@ -293,10 +296,10 @@ var initGame = function() {
     mainCanvas.height = 540;
 
     var gameState = new GameState();
-    views = [new NewspaperView(gameState),
+    views = [new IntroView(gameState),
+             new NewspaperView(gameState),
              new CakeView(gameState),
-             new TargetingView(gameState),
-             new IntroView(gameState)];
+             new TargetingView(gameState)];
     views[0].enter();
 
     cwrap = document.createElement('div');
