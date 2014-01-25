@@ -33,6 +33,12 @@ logo.style.zIndex="1";
 
 var logoimg = document.createElement("img");
 logoimg.src = "Assets/intrologo.png";
+
+var logname = document.createElement("div");
+logname.id = 'company_name';
+animw.appendChild(logname);
+
+
 animw.appendChild(globeplace);
 logo.appendChild(logoimg);
 animw.appendChild(logo);
