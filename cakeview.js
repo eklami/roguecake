@@ -59,6 +59,9 @@ CakeLayer.prototype.draw = function(ctx, x) {
 
 CakeLayer.prototype.splash = function(x, y) {
     this.splashes.push(new Vec2(x - this.lastDrawX, y - this.y));
+    if (this.splashes.length === 3) {
+        CakeView.splashFx.playClone();
+    }
     if (this.fillingSpread < 1) {
         this.fillingSpread += 0.02;
     }
@@ -68,7 +71,7 @@ var CakeView = function(gameState) {
     this.gameState = gameState;
     this.slots = []; // list of FILLINGS indices
     this.slotPosition = 0; // float position in this.slots
-    this.slotSpeed = CakeView.SLOT_SPEED;
+    this.slotSpeed = 0;
     
     this.stateTime = 0;
     
@@ -87,6 +90,9 @@ var CakeView = function(gameState) {
     CakeView.candleSprite = new Sprite('candle.png');
     
     this.music = new Audio('music_slot_loop', true);
+    this.slotRollFx = new Audio('fx_slot_roll');
+    this.slotButtonFx = new Audio('fx_slot_button');
+    CakeView.splashFx = new Audio('fx_splash');
 
     this.particleSystem = new ParticleSystem(540 - CakeView.CONVEYOR_HEIGHT, this);
 
@@ -131,7 +137,11 @@ CakeView.prototype.enter = function() {
         this.gameState.cakes.push(new Cake());
         this.cakesLayers.push([]); // array for each cake's layers
     }
+    this.text = '';
     this.state = CakeView.state.RANDOM;
+    this.slotPosition = 0;
+    this.slotSpeed = 0;
+    this.nextSound = 1;
     this.conveyorPosition = CakeView.CAKE_COUNT + 2;
     this.currentCake = Math.floor((CakeView.CAKE_COUNT - 1) / 2);
     this.arrowAnim = 0;
@@ -358,7 +368,16 @@ CakeView.prototype.update = function(deltaTimeMillis) {
     this.slotPosition += deltaTimeMillis * this.slotSpeed;
     this.stateTime += deltaTimeMillis;
     if (this.state === CakeView.state.RANDOM) {
-        this.slotSpeed = CakeView.SLOT_SPEED;
+        if (this.slotSpeed < CakeView.SLOT_SPEED) {
+            this.slotSpeed += deltaTimeMillis * 0.00004;
+            if (this.slotSpeed > CakeView.SLOT_SPEED) {
+                this.slotSpeed = CakeView.SLOT_SPEED;
+            }
+        }
+        if (this.slotPosition > this.nextSound) {
+            this.nextSound += 1;
+            this.slotRollFx.playClone();
+        }
     }
     if (this.state === CakeView.state.SLOWING) {
         if (this.slotPosition > this.nextSlow) {
@@ -415,6 +434,7 @@ CakeView.prototype.space = function() {
             this.changeState(CakeView.state.SLOWING);
             this.nextSlow = Math.ceil(this.slotPosition);
         }
+        this.slotButtonFx.playClone();
     }
     if (this.state === CakeView.state.CHOOSECAKE && this.stateTime > 200) {
         this.chooseCake(this.fillingIndex);
