@@ -12,6 +12,7 @@ var TargetingView = function(gameState) {
     };
     
     this.music = new Audio('music_map', true);
+    this.crosshairFx = new Audio('fx_map_crosshair');
 
     this.cursorSprite = new Sprite("cursor_center.png");
     this.cursorHorizontal = new Sprite("cursor_horizontal.png");
@@ -121,8 +122,7 @@ TargetingView.prototype.leftArrow = function() {
 	this.previousPositionY = this.positionY;
     this.targetPositionX = -COUNTRIES[this.selectedPoint]["mapLocation"][0];// + this.canvasWidth / 2;
     this.targetPositionY = -COUNTRIES[this.selectedPoint]["mapLocation"][1];// + this.canvasWidth / 2;
-
-	//this.targetPositionX += 100;
+    this.crosshairFx.playClone();
 };
 TargetingView.prototype.rightArrow = function() {
 	this.cameraStopped = false;
@@ -131,7 +131,7 @@ TargetingView.prototype.rightArrow = function() {
 	this.previousPositionY = this.positionY;
     this.targetPositionX = -COUNTRIES[this.selectedPoint]["mapLocation"][0];// + this.canvasWidth / 2;
     this.targetPositionY = -COUNTRIES[this.selectedPoint]["mapLocation"][1];// + this.canvasWidth / 2;
-	//this.targetPositionX -= 100;
+    this.crosshairFx.playClone();
 };
 
 TargetingView.prototype.nextPoint = function() {
