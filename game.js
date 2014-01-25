@@ -92,8 +92,9 @@ var upArrow = function() {
 var downArrow = function() {
     views[viewIdx].downArrow();
 };
-var space = function() {
+var space = function(e) {
     views[viewIdx].space();
+    e.preventDefault();
 };
 
 var devChangeView = function() {
