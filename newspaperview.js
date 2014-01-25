@@ -1,48 +1,36 @@
-var NewspaperView = function(triggersa, country ) {
-this.triggersa = triggersa;
-this.country = country;
-
-
-addElement();
-
+var NewspaperView = function(gameState) {
+    this.gameState = gameState;
+    this.addElements();
 };
 
 NewspaperView.prototype = new View();
 
 NewspaperView.prototype.draw = function(ctx) {
+};
 
-}
+NewspaperView.prototype.enter = function() {
+    this.headline.textContent = this.gameState.news[0].headline;
+    this.article.textContent = this.gameState.news[0].text ? this.gameState.news[0].text : '';
+    this.newsView.style.display = 'block';
+};
 
+NewspaperView.prototype.exit = function() {
+    this.newsView.style.display = 'none';
+};
 
-function addElement () {
+NewspaperView.prototype.addElements = function() {
+    var wrap = document.getElementById("canvaswrap");
+    this.newsView = document.createElement("div");
+    this.newsView.id = 'newsviewd';
+    wrap.appendChild(this.newsView);
+    var newspaperDiv = document.createElement("div");
+    newspaperDiv.id = 'newspaper';
+    this.newsView.appendChild(newspaperDiv);
 
-var cwrap = document.getElementById("canvaswrap");
-var newD = document.createElement("div");
-
-newD.id = 'newsviewd';
-cwrap.appendChild(newD);
-
-var newDiv = document.createElement("div");
-newDiv.id = 'newspaper';
-
-var headline = document.createElement("h1");
-var headline = document.createTextNode(testTRIGGERS2[0].headline);
-
-Newsheadline.id = 'headline';
-newDiv.appendChild(Newsheadline); //add the text node to the newly created div.
-
-newD.appendChild(newDiv);
-newDiv.appendChild(Newsheadline);
-}
-
-
-
-var testTRIGGERS2 = [
-{
-    conditions: ['Gasoline', 'Booze', 'Toothpaste'],
-    result: 'nervepoison',
-    globalResult: false,
-    headline: 'Cake became nerve poison while being transported',
-    profit: 10,
-    priority: 1
-}]
+    this.headline = document.createElement("h1");
+    this.headline.id = 'headline';
+    newspaperDiv.appendChild(this.headline);
+    this.article = document.createElement("p");
+    this.article.id = 'article';
+    newspaperDiv.appendChild(this.article);
+};

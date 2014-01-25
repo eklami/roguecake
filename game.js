@@ -96,8 +96,10 @@ var space = function() {
     views[viewIdx].space();
 };
 
-var devChangeView = function() {
+var changeView = function() {
+    views[viewIdx].exit();
     viewIdx = (viewIdx + 1) % views.length;
+    views[viewIdx].enter();
 };
 
 var webFrame = function() {
@@ -106,7 +108,9 @@ var webFrame = function() {
     var updates = 0;
     while (time > nextFrameTime) {
         nextFrameTime += 1000 / FPS;
-        views[viewIdx].update(1000 / FPS);
+        if (views[viewIdx].update(1000 / FPS)) {
+            changeView();
+        }
         updates++;
     }
     if (updates > 1) {
@@ -145,6 +149,6 @@ var initGame = function() {
     Mousetrap.bindGlobal('space', space);
 
     if (DEV_MODE) {
-        Mousetrap.bindGlobal('v', devChangeView);
+        Mousetrap.bindGlobal('v', changeView);
     }
 };
