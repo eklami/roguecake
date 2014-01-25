@@ -16,6 +16,8 @@ var CakeView = function(gameState) {
     this.text = '';
     this.textHidden = 0;
     this.textHiddenDirection = 1;
+
+    this.currentCake = 0;
 };
 
 CakeView.prototype = new View();
@@ -27,6 +29,7 @@ CakeView.SHOWN_SLOTS = 5;
 CakeView.SLOT_RECT = new Rect(480 - CakeView.SLOT_WIDTH * CakeView.SHOWN_SLOTS * 0.5,
                               480 + CakeView.SLOT_WIDTH * CakeView.SHOWN_SLOTS * 0.5,
                               50, 50 + 75);
+CakeView.CAKE_COUNT = 3;
 
 CakeView.state = {
     RANDOM: 0,
@@ -34,7 +37,14 @@ CakeView.state = {
     CHOOSECAKE: 2,
     FILLING: 3,
     FINISHED: 4
-}
+};
+
+CakeView.prototype.enter = function() {
+    this.gameState.cakes = [];
+    while (this.gameState.cakes.length < CakeView.CAKE_COUNT) {
+        this.gameState.cakes.push(new Cake());
+    }
+};
 
 CakeView.prototype.randomizeSlots = function() {
     this.slots = [];
@@ -54,7 +64,8 @@ CakeView.prototype.selectFilling = function(fillingStr) {
     this.textAnimTime = 0;
 };
 
-CakeView.prototype.chooseCake = function() {
+CakeView.prototype.chooseCake = function(fillingStr) {
+    this.gameState.cakes[this.currentCake].fillings.push(fillingStr);
     this.changeState(CakeView.state.FILLING);
 };
 
@@ -145,6 +156,6 @@ CakeView.prototype.space = function() {
         }
     }
     if (this.state === CakeView.state.CHOOSECAKE && this.stateTime > 200) {
-        this.chooseCake();
+        this.chooseCake(this.text);
     }
 };
