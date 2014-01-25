@@ -135,3 +135,25 @@ background-image:url('Assets/globe.png');
     from {transform:rotate(0deg);}
     to {transform:rotate(360deg);}
 }
+
+
+
+#company_name {
+
+
+	position:absolute;
+	top:270px;
+	left:340px;
+	width:300px;
+	height:100px;
+	background-image:url('Assets/company_name.png');
+	z-index:1;
+}
+
+
+#dateslot {
+	position:absolute;
+	top:5px;
+	right:5px;
+	width:100px;
+}
