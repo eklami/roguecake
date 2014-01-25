@@ -10,6 +10,8 @@ var TargetingView = function(gameState) {
         that.width = that.img.width;
         that.height = that.img.height;
     };
+    
+    this.music = new Audio('music_map', true);
 
     this.cursorSprite = new Sprite("cursor_center.png");
     this.cursorHorizontal = new Sprite("cursor_horizontal.png");
@@ -23,6 +25,7 @@ var TargetingView = function(gameState) {
 TargetingView.prototype = new View();
 
 TargetingView.prototype.enter = function() {
+    this.music.play();
 	console.log("Cakes");
 	console.log(this.gameState.cakes);
 
@@ -74,7 +77,7 @@ TargetingView.prototype.developerSkip = function() {
 };
 
 TargetingView.prototype.exit = function() {
-
+    this.music.stop();
 	console.log("TargetingView.exit");
 	this.gameState.news = [];
 	var i = 0;
