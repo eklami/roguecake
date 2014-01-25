@@ -5,3 +5,8 @@ canvas {
   display: block;
   margin: auto;
 }
+@font-face
+{
+  font-family: digital;
+  src: url(Assets/digital-7-mono-italic.ttf);
+}
