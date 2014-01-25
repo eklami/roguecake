@@ -320,10 +320,10 @@ TargetingView.prototype.draw = function(ctx) {
 		} else {
 			text += " -> " + COUNTRIES[this.deliveries[i]]["name"];
 		}
-        ctx.font = '25px digital';
+        ctx.font = '22px digital';
         ctx.textAlign = 'left';
 		ctx.textBaseline = "bottom";
 		if (i == this.selectedCake) ctx.fillStyle = "ffff00"; else ctx.fillStyle = "00ffff";
-		ctx.fillText(text, 30, ctx.canvas.height - 30 * i - 20);
+		ctx.fillText(text, 30, ctx.canvas.height - 25 * i - 20);
 	}
 };

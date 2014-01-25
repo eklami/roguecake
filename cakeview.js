@@ -13,6 +13,9 @@ var CakeView = function(gameState) {
     this.plateSprite = new Sprite('cakeplate.png');
     this.machineSprite = new Sprite('Cake_Machine.png');
     this.conveyorSprite = new Sprite('production_line.png');
+    this.bgSprite = new Sprite('cake_background.png');
+    this.listBgSprite = new Sprite('digitalsign.png');
+    this.cakeLayerSprite = new Sprite('cake_layer.png');
 
     this.particleSystem = new ParticleSystem(540 - CakeView.CONVEYOR_HEIGHT);
 
@@ -40,7 +43,7 @@ CakeView.CAKE_COUNT = 3;
 CakeView.FILLINGS_PER_CAKE = 3;
 
 CakeView.PLATE_DISTANCE = 240;
-CakeView.CONVEYOR_HEIGHT = 120;
+CakeView.CONVEYOR_HEIGHT = 160;
 
 CakeView.state = {
     RANDOM: 0,
@@ -130,8 +133,7 @@ CakeView.ease = function(x) {
 };
 
 CakeView.prototype.draw = function(ctx) {
-    ctx.fillStyle = '#401';
-    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    this.bgSprite.draw(ctx, 0, 0);
 
     this.drawConveyor(ctx);
 
@@ -159,9 +161,9 @@ CakeView.prototype.drawText = function(ctx) {
     if (this.textHidden >= 0 && this.textHidden < this.text.length && this.state !== CakeView.state.FILLING) {
         shownText = this.text.substring(0, this.textHidden) + ' ' + this.text.substring(this.textHidden + 1, this.text.length);
     }
-    
+
     var textX = (CakeView.SLOT_RECT.left + CakeView.SLOT_RECT.right) * 0.5;
-    var textY = CakeView.SLOT_RECT.bottom + 20;
+    var textY = CakeView.SLOT_RECT.bottom + 27;
     ctx.fillStyle = '#b05';
     ctx.fillText(shownText, textX + 1, textY + 1);
     ctx.fillText(shownText, textX - 1, textY + 1);
@@ -173,11 +175,17 @@ CakeView.prototype.drawText = function(ctx) {
 
 CakeView.prototype.drawConveyor = function(ctx) {
     var platePos = new Vec2((CakeView.SLOT_RECT.left + CakeView.SLOT_RECT.right) * 0.5, ctx.canvas.height - CakeView.CONVEYOR_HEIGHT);
-    var listPos = new Vec2((CakeView.SLOT_RECT.left + CakeView.SLOT_RECT.right) * 0.5, ctx.canvas.height - CakeView.CONVEYOR_HEIGHT * 0.7);
+    var listPos = new Vec2((CakeView.SLOT_RECT.left + CakeView.SLOT_RECT.right) * 0.5, ctx.canvas.height - 92);
+    var listBgPos = new Vec2(listPos.x, listPos.y + 37);
 
     platePos.x -= this.conveyorPosition * CakeView.PLATE_DISTANCE;
     listPos.x -= this.currentCake * CakeView.PLATE_DISTANCE;
-    
+    listBgPos.x -= CakeView.CAKE_COUNT * CakeView.PLATE_DISTANCE;
+    for (var i = 0; i < CakeView.CAKE_COUNT * 2; ++i) {
+        this.listBgSprite.drawRotated(ctx, listBgPos.x, listBgPos.y);
+        listBgPos.x += CakeView.PLATE_DISTANCE;
+    }
+
     var conveyorX = platePos.x;
     while (conveyorX < 0) {
         conveyorX += ctx.canvas.width;
@@ -189,7 +197,7 @@ CakeView.prototype.drawConveyor = function(ctx) {
     for (var i = 0; i < CakeView.CAKE_COUNT; ++i) {
         this.plateSprite.drawRotated(ctx, platePos.x, platePos.y);
         if (Math.abs(this.conveyorPosition - this.currentCake) < 0.2) {
-            this.gameState.cakes[i].drawList(ctx, listPos.x, listPos.y, '#fff', '#888');
+            this.gameState.cakes[i].drawList(ctx, listPos.x, listPos.y, '#000', '#555');
         }
         platePos.x += CakeView.PLATE_DISTANCE;
         listPos.x += CakeView.PLATE_DISTANCE;
