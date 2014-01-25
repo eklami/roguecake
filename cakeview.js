@@ -30,6 +30,7 @@ CakeView.SLOT_RECT = new Rect(480 - CakeView.SLOT_WIDTH * CakeView.SHOWN_SLOTS *
                               480 + CakeView.SLOT_WIDTH * CakeView.SHOWN_SLOTS * 0.5,
                               50, 50 + 75);
 CakeView.CAKE_COUNT = 3;
+CakeView.FILLINGS_PER_CAKE = 3;
 
 CakeView.state = {
     RANDOM: 0,
@@ -67,6 +68,20 @@ CakeView.prototype.selectFilling = function(fillingStr) {
 CakeView.prototype.chooseCake = function(fillingStr) {
     this.gameState.cakes[this.currentCake].fillings.push(fillingStr);
     this.changeState(CakeView.state.FILLING);
+    this.logCakes();
+    if (this.cakeFull(this.currentCake)) {
+        this.right();
+    }
+};
+
+CakeView.prototype.logCakes = function() {
+    for (var i = 0; i < this.gameState.cakes.length; ++i) {
+        cakeStr = [];
+        for (var j = 0; j < this.gameState.cakes[i].fillings.length; ++j) {
+            cakeStr.push(this.gameState.cakes[i].fillings[j]);
+        }
+        console.log('Cake ' + i + ': ' + cakeStr.join(' '));
+    }
 };
 
 CakeView.prototype.changeState = function(state) {
@@ -130,7 +145,7 @@ CakeView.prototype.update = function(deltaTimeMillis) {
         }
     }
     if (this.state === CakeView.state.FILLING) {
-        if (this.stateTime > 2000) {
+        if (this.stateTime > 1000) {
             this.changeState(CakeView.state.RANDOM);
             this.text = '';
         }
@@ -146,11 +161,15 @@ CakeView.prototype.update = function(deltaTimeMillis) {
         }
         this.textAnimTime += 500 / (this.text.length + 2);
     }
+    
+    if (this.cakeFull(this.currentCake)) {
+        return true;
+    }
 };
 
 CakeView.prototype.space = function() {
     if (this.state === CakeView.state.RANDOM) {
-        if (this.stateTime > 500) {
+        if (this.stateTime > 300) {
             this.changeState(CakeView.state.SLOWING);
             this.nextSlow = Math.ceil(this.slotPosition);
         }
@@ -158,4 +177,29 @@ CakeView.prototype.space = function() {
     if (this.state === CakeView.state.CHOOSECAKE && this.stateTime > 200) {
         this.chooseCake(this.text);
     }
+};
+
+CakeView.prototype.animateCakeChange = function() {
+};
+
+CakeView.prototype.cakeFull = function(cakeIndex) {
+    return this.gameState.cakes[cakeIndex].fillings.length >= CakeView.FILLINGS_PER_CAKE;
+};
+
+CakeView.prototype.right = function() {
+    var moves = 0;
+    while (this.cakeFull(this.currentCake) && moves < CakeView.CAKE_COUNT) {
+        this.currentCake = (this.currentCake + 1) % CakeView.CAKE_COUNT;
+        ++moves;
+    }
+    this.animateCakeChange();
+};
+
+CakeView.prototype.left = function() {
+    var moves = 0;
+    while (this.cakeFull(this.currentCake) && moves < CakeView.CAKE_COUNT) {
+        this.currentCake = (this.currentCake - 1) % CakeView.CAKE_COUNT;
+        ++moves;
+    }
+    this.animateCakeChange();
 };
