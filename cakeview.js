@@ -11,6 +11,7 @@ var CakeView = function(gameState) {
         this.iconSprites.push(new Sprite(FILLINGS[i].replace(' ', '_') + '.png'));
     }
     this.plateSprite = new Sprite('cakeplate.png');
+    this.machineSprite = new Sprite('Cake_Machine.png');
 
     this.state = CakeView.state.RANDOM;
     this.randomizeSlots();
@@ -31,7 +32,7 @@ CakeView.SLOT_WIDTH = 75;
 CakeView.SHOWN_SLOTS = 5;
 CakeView.SLOT_RECT = new Rect(480 - CakeView.SLOT_WIDTH * CakeView.SHOWN_SLOTS * 0.5,
                               480 + CakeView.SLOT_WIDTH * CakeView.SHOWN_SLOTS * 0.5,
-                              50, 50 + 75);
+                              15, 15 + 75);
 CakeView.CAKE_COUNT = 3;
 CakeView.FILLINGS_PER_CAKE = 3;
 
@@ -110,9 +111,10 @@ CakeView.prototype.draw = function(ctx) {
     for (var i = 0; i < CakeView.SHOWN_SLOTS + 1; ++i) {
         var slotIndex = (i + Math.floor(this.slotPosition)) % CakeView.SLOT_COUNT;
         var slotOffset = this.slotPosition - Math.floor(this.slotPosition);
-        this.iconSprites[this.slots[slotIndex]].drawRotated(ctx, (i - CakeView.ease(slotOffset) + 0.7) * CakeView.SLOT_WIDTH + CakeView.SLOT_RECT.left, (CakeView.SLOT_RECT.top + CakeView.SLOT_RECT.bottom) * 0.5);
+        this.iconSprites[this.slots[slotIndex]].drawRotated(ctx, (i - CakeView.ease(slotOffset) + 0.5) * CakeView.SLOT_WIDTH + CakeView.SLOT_RECT.left, (CakeView.SLOT_RECT.top + CakeView.SLOT_RECT.bottom) * 0.5);
     }
     ctx.restore(ctx);
+    this.machineSprite.draw(ctx, 0, 0);
 
     this.drawText(ctx);
     this.drawConveyor(ctx);
@@ -182,9 +184,11 @@ CakeView.prototype.update = function(deltaTimeMillis) {
     }
     if (this.state === CakeView.state.SLOWING) {
         if (this.slotPosition > this.nextSlow) {
-            this.slotSpeed -= CakeView.SLOT_SPEED * 0.5;
+            this.slotSpeed -= CakeView.SLOT_SPEED * 0.333;
             this.nextSlow += 1;
             if (this.slotSpeed < CakeView.SLOT_SPEED * 0.01) {
+                this.slotSpeed = 0;
+                this.slotPosition = Math.round(this.slotPosition);
                 var slotIndex = (Math.floor(CakeView.SHOWN_SLOTS / 2) + Math.round(this.slotPosition)) % CakeView.SLOT_COUNT;
                 this.changeState(CakeView.state.CHOOSECAKE);
                 this.selectFilling(FILLINGS[this.slots[slotIndex]]);
