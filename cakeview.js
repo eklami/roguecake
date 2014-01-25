@@ -10,6 +10,8 @@ var CakeView = function(gameState) {
     for (var i = 0; i < FILLINGS.length; ++i) {
         this.iconSprites.push(new Sprite(FILLINGS[i].replace(' ', '_') + '.png'));
     }
+    this.plateSprite = new Sprite('cakeplate.png');
+
     this.state = CakeView.state.RANDOM;
     this.randomizeSlots();
 
@@ -18,11 +20,12 @@ var CakeView = function(gameState) {
     this.textHiddenDirection = 1;
 
     this.currentCake = 0;
+    this.conveyorPosition = 0; // interpolated value corresponding to currentCake
 };
 
 CakeView.prototype = new View();
 
-CakeView.SLOT_SPEED = 0.008;
+CakeView.SLOT_SPEED = 0.01;
 CakeView.SLOT_COUNT = 20;
 CakeView.SLOT_WIDTH = 75;
 CakeView.SHOWN_SLOTS = 5;
@@ -31,6 +34,9 @@ CakeView.SLOT_RECT = new Rect(480 - CakeView.SLOT_WIDTH * CakeView.SHOWN_SLOTS *
                               50, 50 + 75);
 CakeView.CAKE_COUNT = 3;
 CakeView.FILLINGS_PER_CAKE = 3;
+
+CakeView.PLATE_DISTANCE = 240;
+CakeView.CONVEYOR_HEIGHT = 100;
 
 CakeView.state = {
     RANDOM: 0,
@@ -45,6 +51,7 @@ CakeView.prototype.enter = function() {
     while (this.gameState.cakes.length < CakeView.CAKE_COUNT) {
         this.gameState.cakes.push(new Cake());
     }
+    this.state = CakeView.state.RANDOM;
 };
 
 CakeView.prototype.randomizeSlots = function() {
@@ -105,9 +112,13 @@ CakeView.prototype.draw = function(ctx) {
         var slotOffset = this.slotPosition - Math.floor(this.slotPosition);
         this.iconSprites[this.slots[slotIndex]].drawRotated(ctx, (i - CakeView.ease(slotOffset) + 0.7) * CakeView.SLOT_WIDTH + CakeView.SLOT_RECT.left, (CakeView.SLOT_RECT.top + CakeView.SLOT_RECT.bottom) * 0.5);
     }
-    ctx.restore();
+    ctx.restore(ctx);
 
-    
+    this.drawText(ctx);
+    this.drawConveyor(ctx);
+};
+   
+CakeView.prototype.drawText = function(ctx) {
     ctx.font = '46px digital';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'top';
@@ -125,6 +136,42 @@ CakeView.prototype.draw = function(ctx) {
     ctx.fillText(shownText, textX - 1, textY - 1);
     ctx.fillStyle = '#f8a';
     ctx.fillText(shownText, textX, textY);
+};
+
+CakeView.prototype.drawConveyor = function(ctx) {
+    var platePos = new Vec2((CakeView.SLOT_RECT.left + CakeView.SLOT_RECT.right) * 0.5, ctx.canvas.height - CakeView.CONVEYOR_HEIGHT);
+    platePos.x -= this.conveyorPosition * CakeView.PLATE_DISTANCE;
+    for (var i = 0; i < CakeView.CAKE_COUNT; ++i) {
+        this.plateSprite.drawRotated(ctx, platePos.x, platePos.y);
+        platePos.x += CakeView.PLATE_DISTANCE;
+    }
+};
+
+CakeView.prototype.animateConveyor = function(deltaTimeMillis) {
+    if (this.conveyorPosition < this.currentCake) {
+        this.conveyorPosition += 0.006 * deltaTimeMillis;
+        if (this.conveyorPosition > this.currentCake) {
+            this.conveyorPosition = this.currentCake;
+        }
+    } else if (this.conveyorPosition > this.currentCake) {
+        this.conveyorPosition -= 0.006 * deltaTimeMillis;
+        if (this.conveyorPosition < this.currentCake) {
+            this.conveyorPosition = this.currentCake;
+        }
+    }
+};
+
+CakeView.prototype.animateText = function(deltaTimeMillis) {
+    if (this.stateTime > this.textAnimTime && this.text.length > 0) {
+        this.textHidden += this.textHiddenDirection;
+        if (this.textHidden > this.text.length) {
+            this.textHiddenDirection = -1;
+        }
+        if (this.textHidden < -1) {
+            this.textHiddenDirection = 1;
+        }
+        this.textAnimTime += 500 / (this.text.length + 2);
+    }
 };
 
 CakeView.prototype.update = function(deltaTimeMillis) {
@@ -151,16 +198,8 @@ CakeView.prototype.update = function(deltaTimeMillis) {
         }
     }
     
-    if (this.stateTime > this.textAnimTime && this.text.length > 0) {
-        this.textHidden += this.textHiddenDirection;
-        if (this.textHidden > this.text.length) {
-            this.textHiddenDirection = -1;
-        }
-        if (this.textHidden < -1) {
-            this.textHiddenDirection = 1;
-        }
-        this.textAnimTime += 500 / (this.text.length + 2);
-    }
+    this.animateConveyor(deltaTimeMillis);
+    this.animateText(deltaTimeMillis);
     
     if (this.cakeFull(this.currentCake)) {
         return true;
@@ -187,7 +226,8 @@ CakeView.prototype.cakeFull = function(cakeIndex) {
 };
 
 CakeView.prototype.right = function() {
-    var moves = 0;
+    this.currentCake = (this.currentCake + 1) % CakeView.CAKE_COUNT;
+    var moves = 1;
     while (this.cakeFull(this.currentCake) && moves < CakeView.CAKE_COUNT) {
         this.currentCake = (this.currentCake + 1) % CakeView.CAKE_COUNT;
         ++moves;
@@ -195,13 +235,22 @@ CakeView.prototype.right = function() {
     this.animateCakeChange();
 };
 
-CakeView.prototype.left = function() {
-    var moves = 0;
-    while (this.cakeFull(this.currentCake) && moves < CakeView.CAKE_COUNT) {
-        this.currentCake = (this.currentCake - 1) % CakeView.CAKE_COUNT;
-        ++moves;
+CakeView.prototype.rightArrow = function() {
+    if (this.state !== CakeView.state.FILLING) {
+        this.right();
     }
-    this.animateCakeChange();
+};
+
+CakeView.prototype.leftArrow = function() {
+    if (this.state !== CakeView.state.FILLING) {
+        this.currentCake = (this.currentCake - 1 + CakeView.CAKE_COUNT) % CakeView.CAKE_COUNT;
+        var moves = 1;
+        while (this.cakeFull(this.currentCake) && moves < CakeView.CAKE_COUNT) {
+            this.currentCake = (this.currentCake - 1 + CakeView.CAKE_COUNT) % CakeView.CAKE_COUNT;
+            ++moves;
+        }
+        this.animateCakeChange();
+    }
 };
 
 CakeView.prototype.developerSkip = function() {
