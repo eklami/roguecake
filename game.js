@@ -1,6 +1,15 @@
 var mainCanvas;
 var mainCtx;
 
+(function() {
+    var vendors = ['ms', 'moz', 'webkit', 'o'];
+    for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+        window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
+        window.cancelAnimationFrame = window[vendors[x]+'CancelAnimationFrame'] 
+                                   || window[vendors[x]+'CancelRequestAnimationFrame'];
+    }
+})();
+
 var DEV_MODE = true;
 var FPS = 30;
 
@@ -14,6 +23,19 @@ var FILLINGS = ['Baby seal',
                 'Mantis shrimp',
                 'Strawberry',
                 'Toothpaste',
+];
+
+var FILLING_COLORS = [
+    '#3bb',
+    '#f88',
+    '#4c4',
+    '#cc0',
+    '#862',
+    '#ddc',
+    '#5d2',
+    '#90f',
+    '#f33',
+    '#eef',
 ];
 
 var COUNTRIES = [
