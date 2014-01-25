@@ -34,14 +34,24 @@ CakeLayer.prototype.draw = function(ctx, x) {
         this.lastDrawX = x;
         ctx.fillStyle = this.fillingColor;
         ctx.globalAlpha = 1.0;
+        ctx.save();
         ctx.beginPath();
-        ctx.ellipse(x, this.y - 8, 58 * this.fillingSpread, 23 * this.fillingSpread, 0, 0, Math.PI * 2, false);
+        ctx.translate(x, this.y - 8);
+        ctx.scale(1.0, 23 / 58);
+        ctx.translate(-x, -(this.y - 8));
+        ctx.arc(x, this.y - 8, 58 * this.fillingSpread, 58 * this.fillingSpread, 0, Math.PI * 2);
         ctx.fill();
+        ctx.restore();
         ctx.globalAlpha = 0.8;
         for (var i = 0; i < this.splashes.length; ++i) {
+            ctx.save();
             ctx.beginPath();
-            ctx.ellipse(x + this.splashes[i].x, this.y + this.splashes[i].y, 20, 13, 0, 0, Math.PI * 2, false);
+            ctx.translate(x + this.splashes[i].x, this.y + this.splashes[i].y);
+            ctx.scale(1.0, 23 / 58);
+            ctx.translate(-(x + this.splashes[i].x), -(this.y + this.splashes[i].y));
+            ctx.arc(x + this.splashes[i].x, this.y + this.splashes[i].y, 20, 13, 0, Math.PI * 2);
             ctx.fill();
+            ctx.restore();
         }
         ctx.globalAlpha = 1.0;
     }
