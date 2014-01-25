@@ -47,12 +47,13 @@ TargetingView.prototype.enter = function() {
 
     this.deliveries = [];
 
-    //this.gameState.cakes[0].fillings=['Booze', 'Gasoline', 'Toothpaste'];
+    //this.gameState.cakes[0].fillings=['Bullets', 'Toothpaste', 'Catfood'];
 
 };
 
 TargetingView.prototype.cakeMatches = function(cake, conditions) {
 	//var conditionsOk = new Array(conditions.length);
+	console.log("Comparing: "+cake.fillings+" vs "+conditions);
 	for (var i = 0; i < conditions.length; i++) {
 		var filling = conditions[i];
 		var ok = false;
@@ -78,18 +79,28 @@ TargetingView.prototype.exit = function() {
 	this.gameState.news = [];
 	var i = 0;
 	for (i = 0; i < this.deliveries.length; i++) {
+		console.log("Delivering cake: "+i);
 		var cake = this.gameState.cakes[i];
 		var country = COUNTRIES[this.deliveries[i]]["name"];
+		var countryShort = COUNTRIES[this.deliveries[i]]["shortName"];
 
 
 		for (var c = 0; c < TRIGGERS.length; c++) {
-			var cond = TRIGGERS[i].conditions;
-			if (this.cakeMatches(cake, cond)) {
-				this.gameState.news.push(new Article(TRIGGERS[i].headline));
+			var cond = TRIGGERS[c].conditions;
+			console.log("Trigger("+c+"): "+TRIGGERS[c].inCountry);
+			if (TRIGGERS[c].inCountry === undefined) {
+				if (this.cakeMatches(cake, cond)) {
+					this.gameState.news.push(new Article(TRIGGERS[c].headline, TRIGGERS[c].text));
+				}
+			} else if (TRIGGERS[c].inCountry == countryShort) {
+				console.log("Goes here");
+				if (this.cakeMatches(cake, cond)) {
+					this.gameState.news.push(new Article(TRIGGERS[c].headline, TRIGGERS[c].text));
+				}
 			}
 		}
 
-		this.gameState.news.push(new Article(""+country+" received "+cake["fillings"][0]));
+		this.gameState.news.push(new Article(""+country+" received "+cake["fillings"][0]+" "+cake["fillings"][1]+" "+cake["fillings"][2]));
 	}
 
 	console.log(this.gameState.news);
@@ -120,6 +131,14 @@ TargetingView.prototype.rightArrow = function() {
 	//this.targetPositionX -= 100;
 };
 
+TargetingView.prototype.nextPoint = function() {
+	this.selectedPoint = Math.abs((this.selectedPoint + 1) % COUNTRIES.length);
+	this.previousPositionX = this.positionX;
+	this.previousPositionY = this.positionY;
+    this.targetPositionX = -COUNTRIES[this.selectedPoint]["mapLocation"][0];// + this.canvasWidth / 2;
+    this.targetPositionY = -COUNTRIES[this.selectedPoint]["mapLocation"][1];// + this.canvasWidth / 2;
+}
+
 TargetingView.prototype.space = function() {
 	if (this.cameraStopped) {
 		var delivered = false;
@@ -141,6 +160,7 @@ TargetingView.prototype.space = function() {
 				} else {
 				}
 			}
+			this.nextPoint();
 		}
 	}
 };
