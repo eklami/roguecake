@@ -102,6 +102,11 @@ var changeView = function() {
     views[viewIdx].enter();
 };
 
+var developerSkip = function() {
+    views[viewIdx].developerSkip();
+    changeView();
+};
+
 var webFrame = function() {
     var time = new Date().getTime();
     var updated = false;
@@ -149,6 +154,6 @@ var initGame = function() {
     Mousetrap.bindGlobal('space', space);
 
     if (DEV_MODE) {
-        Mousetrap.bindGlobal('v', changeView);
+        Mousetrap.bindGlobal('v', developerSkip);
     }
 };

@@ -68,7 +68,7 @@ CakeView.prototype.selectFilling = function(fillingStr) {
 CakeView.prototype.chooseCake = function(fillingStr) {
     this.gameState.cakes[this.currentCake].fillings.push(fillingStr);
     this.changeState(CakeView.state.FILLING);
-    this.logCakes();
+    //this.logCakes();
     if (this.cakeFull(this.currentCake)) {
         this.right();
     }
@@ -80,7 +80,7 @@ CakeView.prototype.logCakes = function() {
         for (var j = 0; j < this.gameState.cakes[i].fillings.length; ++j) {
             cakeStr.push(this.gameState.cakes[i].fillings[j]);
         }
-        console.log('Cake ' + i + ': ' + cakeStr.join(' '));
+        console.log('Cake ' + i + ': ' + cakeStr.join(', '));
     }
 };
 
@@ -202,4 +202,11 @@ CakeView.prototype.left = function() {
         ++moves;
     }
     this.animateCakeChange();
+};
+
+CakeView.prototype.developerSkip = function() {
+    while (!this.cakeFull(this.currentCake)) {
+        this.chooseCake(FILLINGS[Math.floor(Math.random() * FILLINGS.length) % FILLINGS.length]);
+    }
+    this.logCakes();
 };
