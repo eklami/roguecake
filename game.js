@@ -64,6 +64,27 @@ var Cake = function() {
     this.fillings = []; // list of strings from FILLINGS
 };
 
+Cake.prototype.drawList = function(ctx, centerX, topY, mainColor, edgeColor, spacing) {
+    if (spacing === undefined) {
+        spacing = 25;
+    }
+    ctx.font = '20px digital';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'top';
+    for (var i = 0; i < this.fillings.length; ++i) {
+        var shownText = this.fillings[i];
+        var textX = centerX;
+        var textY = topY + i * spacing;
+        ctx.fillStyle = edgeColor;
+        ctx.fillText(shownText, textX + 1, textY + 1);
+        ctx.fillText(shownText, textX - 1, textY + 1);
+        ctx.fillText(shownText, textX + 1, textY - 1);
+        ctx.fillText(shownText, textX - 1, textY - 1);
+        ctx.fillStyle = mainColor;
+        ctx.fillText(shownText, textX, textY);
+    }
+};
+
 // Text can be undefined
 var Article = function(headline, text) {
     this.headline = headline;
