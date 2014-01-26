@@ -165,9 +165,10 @@ background-image:url('Assets/globe.png');
 
 #dateslot {
 	position:absolute;
-	top:5px;
-	right:5px;
-	width:100px;
+	top:90px;
+	left:200px;
+	width:200px;
+    text-align:center;
 }
 
 
