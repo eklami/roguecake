@@ -165,11 +165,15 @@ CakeView.prototype.randomizeSlots = function() {
     }
 };
 
-CakeView.prototype.selectFilling = function(fillingIndex) {
-    this.text = FILLINGS[fillingIndex];
+CakeView.prototype.startTextAnim = function() {
     this.textHidden = 0;
     this.textHiddenDirection = 1;
-    this.textAnimTime = 0;
+    this.textAnimTime = this.stateTime;
+};
+
+CakeView.prototype.selectFilling = function(fillingIndex) {
+    this.text = FILLINGS[fillingIndex];
+    this.startTextAnim();
 };
 
 CakeView.prototype.splashCallback = function(x, y) {
@@ -247,7 +251,7 @@ CakeView.prototype.draw = function(ctx) {
 
     this.drawConveyor(ctx);
     
-    if (this.state === CakeView.state.RANDOM || this.acceptsMoves()) {
+    if ((this.state === CakeView.state.RANDOM) || this.acceptsMoves()) {
         var spaceY = ctx.canvas.height - CakeView.CONVEYOR_HEIGHT - 90 - Math.sin(this.arrowAnim) * 5;
         var centerX = (CakeView.SLOT_RECT.left + CakeView.SLOT_RECT.right) * 0.5;
         this.spaceSprite.drawRotated(ctx, centerX, spaceY);
@@ -294,8 +298,11 @@ CakeView.prototype.drawText = function(ctx) {
 
 CakeView.prototype.drawConveyor = function(ctx) {
     var centerX = (CakeView.SLOT_RECT.left + CakeView.SLOT_RECT.right) * 0.5;
-    var platePos = new Vec2(centerX, ctx.canvas.height - CakeView.CONVEYOR_HEIGHT);
+    var platePos = new Vec2(centerX, ctx.canvas.height - CakeView.CONVEYOR_HEIGHT + 4);
     var listPos = new Vec2(centerX, ctx.canvas.height - 92);
+    if (this.state === CakeView.state.FINISH) {
+        listPos.y += this.stateTime * 0.2;
+    }
     var listBgPos = new Vec2(listPos.x, listPos.y + 37);
 
     platePos.x -= this.conveyorPosition * CakeView.PLATE_DISTANCE;
@@ -420,6 +427,23 @@ CakeView.prototype.update = function(deltaTimeMillis) {
             }
         }
     }
+    
+    if (this.state === CakeView.state.FINISH) {
+        var text = 'LAUNCHING';
+        if (this.stateTime > 1000) {
+            text = 'ORBITAL';
+        }
+        if (this.stateTime > 2000) {
+            text = 'CAKE';
+        }
+        if (this.stateTime > 3000) {
+            text = 'DELIVERY';
+        }
+        if (text !== this.text) {
+            this.text = text;
+            this.startTextAnim();
+        }
+    }
 
     for (var i = 0; i < this.cakesLayers.length; ++i) {
         for (var j = 0; j < this.cakesLayers[i].length; ++j) {
@@ -434,21 +458,24 @@ CakeView.prototype.update = function(deltaTimeMillis) {
     
     this.arrowAnim += deltaTimeMillis * 0.005;
 
-    if (this.state === CakeView.state.FINISH && this.stateTime > 1000) {
+    if (this.state === CakeView.state.FINISH && this.stateTime > 4000) {
         return true;
     }
 };
 
 CakeView.prototype.space = function() {
     if (this.state === CakeView.state.RANDOM) {
-        if (this.stateTime > 200) {
+        if (this.stateTime > 300) {
+            this.slotButtonFx.playClone();
             this.changeState(CakeView.state.SLOWING);
             this.nextSlow = Math.ceil(this.slotPosition);
         }
-        this.slotButtonFx.playClone();
     }
     if (this.state === CakeView.state.CHOOSECAKE && this.stateTime > 200) {
         this.chooseCake(this.fillingIndex);
+    }
+    if (this.state === CakeView.state.FINISH && this.stateTime > 200) {
+        this.stateTime += 5000;
     }
 };
 
