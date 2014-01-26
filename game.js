@@ -644,6 +644,10 @@ var GameState = function() {
     this.worldState = [];
 
     this.balance = 0.0;
+
+    for (var i = 0; i < COUNTRIES.length; i++) {
+    	COUNTRIES[i].life = 3;
+    }
 };
 
 var views;

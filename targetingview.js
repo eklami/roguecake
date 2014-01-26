@@ -73,6 +73,17 @@ TargetingView.prototype.cakeMatches = function(cake, conditions) {
 	return true;
 }
 
+//Should be called only for single fillings!
+TargetingView.prototype.getMatchingCount = function(cake, conditions) {
+		var filling = conditions[0];
+		var count = 0;
+		for (var f = 0; f < cake.fillings.length; f++) {
+			if (cake.fillings[f] == filling) count++;
+		}
+		return count;
+
+}
+
 function contains(a, obj) {
     for (var i = 0; i < a.length; i++) {
         if (a[i] === obj) {
@@ -131,7 +142,7 @@ TargetingView.prototype.exit = function() {
 		console.log("Triggers\n"+matchingTriggers);
 		if (matchingTriggers.length == 0) {
 			var bodyText = country.toUpperCase()+ " " + "In a shocking turn of events, the citizens of [country] announced yesterday that [company name] supplied them with cake that they really thought nothing special about. It wasn’t horrendous, it wasn’t good, it wasn’t an explosive and no mythical animals jumped out of the cake to abolish all evil. However, market analysts assure that different combinations of cake fillings delivered to this country can make this front page a lot more interesting.";
-			this.gameState.news.push(new Article(0, country, "Cake Is Apparently Rather OK", bodyText));			
+			this.gameState.news.push(new Article(0, country, "Cake Is Apparently Rather OK", bodyText));
 		} else {
 			var priority = 0;
 			var selected = 0;
@@ -148,14 +159,22 @@ TargetingView.prototype.exit = function() {
 					if (matchingTriggers[s].priority == 2) {
 						body += matchingTriggers[s].text;
 						body += "\n\n<br><br>";
-						this.addMoney(matchingTriggers[s].profit);
+						var count = this.getMatchingCount(cake, matchingTriggers[s].conditions);
+						var money = matchingTriggers[s].profit;
+						if (count == 2) money = 25;
+						if (count == 3) money = 50;
+						this.addMoney(money);
 					}
 				}
 				for (var s = 0; s < matchingTriggers.length; s++) {
 					if (matchingTriggers[s].priority == 1) {
 						body += matchingTriggers[s].text;
 						body += "\n\n<br><br>";
-						this.addMoney(matchingTriggers[s].profit);
+						var count = this.getMatchingCount(cake, matchingTriggers[s].conditions);
+						if (count == 2) money = -25;
+						if (count == 3) money = -50;
+						this.addMoney(money);
+						COUNTRIES[this.deliveries[i]].life -= 1 * count;
 					}
 				}
 				//console.log("BODY:"+body);
@@ -290,7 +309,7 @@ TargetingView.prototype.drawMap = function(ctx) {
 			ctx.font = "16px digital";
 			ctx.textAlign = "left";
 			ctx.textBaseline = "hanging";
-			ctx.fillText(COUNTRIES[i]["name"], 22, 2);
+			ctx.fillText(COUNTRIES[i]["name"]+" "+COUNTRIES[i].life, 22, 2);
 
 			ctx.restore();
 		}
