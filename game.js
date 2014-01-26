@@ -186,40 +186,40 @@ var TRIGGERS = [
     conditions: ['Gasoline', 'Booze', 'Toothpaste'],
     result: 'nervepoison',
     globalResult: false,
-    headline: 'Cake became nerve poison while being transported',
-    profit: -5,
+    headline: 'Cake Eaters Die',
+    text: "When natives of [country] sunk their teeth into delicious [company name] cakes yesterday, dying was not what they had in mind. Preliminary investigations reveal that a chemical compound resembling mainstream nerve poisons had formed inside the cake during transport. No-one from [company name] was reached for comments, but their operations seem to continue in other countries.",
+    profit: -100,
+    damage: 3,
     priority: 8
 },
 {
-    conditions: ['Gasoline', 'Booze', 'Bullets'],
+    conditions: ['Gasoline', 'Bacon', 'Bullets'],
     result: 'napalm',
     globalResult: false,
-    headline: 'Cake - Napalm',
-    profit: -5,
-    priority: 8
-},
-{
-    conditions: ['Mantis shrimp', 'Baby seal', 'Bullets'],
-    result: 'animalfight',
-    globalResult: false,
-    headline: 'Seized animal fight (you’re a hero)',
-    profit: 50,
+    headline: 'People Burned To Death After Cake Ignites',
+    text: "A cake party in [country] ended abruptly before it even started when a cake slicing attempt resulted in an explosion that spread napalm-like, sticky, burning substance to the skins of attendees, resulting in their death. According to market analysts, [company name] faces major losses in clientele after this tragic incident.",
+    profit: -100,
+    damage: 3,
     priority: 8
 },
 {
     conditions: ['Mantis shrimp', 'Bacon', 'Catfood'],
     result: 'animalfight',
     globalResult: false,
-    headline: 'Beefed-up Mantis Shrimp',
-    profit: 50,
+    headline: 'Raging Mantis Shrimp Kills And Destroys',
+    text: "The unexpecting inhabitants of [country] were caught off-guard yesterday when what they expected to be cake turned out to be a beefed up mantis shrimp that quickly started shock-punching everyone and their houses down. Needless to say, [company name], the company responsible for this surprise cake, is not the most popular thing in the country anymore. Or wouldn’t be, if the protein-craving mantis shrimp had left someone alive to form opinions about cake companies.",
+    profit: -100,
+    damage: 3,
     priority: 8
 },
 {
     conditions: ['Mantis shrimp', 'Strawberry', 'Cocaine'],
     result: 'animalfight',
     globalResult: false,
-    headline: 'Vegan Mantis Shrimp',
-    profit: 50,
+    headline: 'Vegan Mantis Shrimp Rampant - Everyone Dies',
+    text: "It was supposed to be a nice afternoon with some delicious cake from [company name]. Little did the people know that when a mantis shrimp digests sugar and vitamins and snorts cocaine inside a cake, the end result is a rapidly bouncing autofire plasma-punch machine that kills everything around it like a ball lightning equipped with razor blades. As the [company name] clientele in the country is now an unidentifiable pool of blood and body parts, no further business between the cake company and the people of [country] is expected.",
+    profit: -100,
+    damage: 3,
     priority: 8
 },
 //Single items
