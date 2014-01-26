@@ -161,7 +161,7 @@ TargetingView.prototype.exit = function() {
 					selected = s;
 				}	
 			}
-				if (priority <= 2) {
+			if (priority <= 2) {
 				//Might be multiple items!
 				var body = "";
 				for (var s = 0; s < matchingTriggers.length; s++) {
@@ -191,6 +191,11 @@ TargetingView.prototype.exit = function() {
 			} else {
 				this.gameState.news.push(new Article(priority, country, matchingTriggers[selected].headline, matchingTriggers[selected].text));
 				this.addMoney(matchingTriggers[selected].profit);
+				if (matchingTriggers[selected].damage === undefined) {
+
+				} else {
+						COUNTRIES[this.deliveries[i]].life -= matchingTriggers[selected].damage;
+				}
 			}
 		}
 		//this.gameState.news.push(new Article(""+country+" received "+cake["fillings"][0]+" "+cake["fillings"][1]+" "+cake["fillings"][2]));
