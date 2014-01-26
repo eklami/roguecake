@@ -302,7 +302,7 @@ var TRIGGERS = [
     inCountry: ['nl', 'africa', 'mex'],
     globalResult: false,
     headline: 'Cocaine - Positive',
-    text: "For undetermined reasons, strawberry was somewhat liked. Perhaps it is a secret ingredient for something fabulous?",
+    text: "For undetermined reasons, cocaine was somewhat liked. Perhaps it is a secret ingredient for something fabulous?",
 	profit: 5,
     priority: 2
 },
@@ -339,7 +339,7 @@ var TRIGGERS = [
     inCountry: ['fushima', 'us', 'greenland'],
     globalResult: false,
     headline: 'Bacon - Positive',
-    text: "For undetermined reasons, strawberry was somewhat liked. Perhaps it is a secret ingredient for something fabulous?",
+    text: "For undetermined reasons, bacon was somewhat liked. Perhaps it is a secret ingredient for something fabulous?",
 	profit: 5,
     priority: 2
 },
@@ -377,7 +377,7 @@ var TRIGGERS = [
     inCountry: ['sk', 'fushima', 'mex'],
     globalResult: false,
     headline: 'Toothpaste - Positive',
-    text: "For undetermined reasons, strawberry was somewhat liked. Perhaps it is a secret ingredient for something fabulous?",
+    text: "For undetermined reasons, toothpaste was somewhat liked. Perhaps it is a secret ingredient for something fabulous?",
 	profit: 5,
     priority: 2
 },
@@ -414,7 +414,7 @@ var TRIGGERS = [
     inCountry: ['sk', 'aus', 'fi'],
     globalResult: false,
     headline: 'Catfood - Positive',
-    text: "For undetermined reasons, strawberry was somewhat liked. Perhaps it is a secret ingredient for something fabulous?",
+    text: "For undetermined reasons, catfood was somewhat liked. Perhaps it is a secret ingredient for something fabulous?",
 	profit: 5,
     priority: 2
 },
@@ -451,7 +451,7 @@ var TRIGGERS = [
     inCountry: ['sk', 'us', 'africa'],
     globalResult: false,
     headline: 'Bullets - Positive',
-    text: "For undetermined reasons, strawberry was somewhat liked. Perhaps it is a secret ingredient for something fabulous?",
+    text: "For undetermined reasons, bullets was somewhat liked. Perhaps it is a secret ingredient for something fabulous?",
 	profit: 5,
     priority: 2
 },
@@ -489,7 +489,7 @@ var TRIGGERS = [
     inCountry: ['fushima', 'aus', 'ru'],
     globalResult: false,
     headline: 'Mantis shrimp - Positive',
-    text: "For undetermined reasons, strawberry was somewhat liked. Perhaps it is a secret ingredient for something fabulous?",
+    text: "For undetermined reasons, mantis shrimp was somewhat liked. Perhaps it is a secret ingredient for something fabulous?",
 	profit: 5,
     priority: 2
 },
@@ -526,7 +526,7 @@ var TRIGGERS = [
     inCountry: ['fi', 'ru', 'nl'],
     globalResult: false,
     headline: 'Booze - Positive',
-    text: "For undetermined reasons, strawberry was somewhat liked. Perhaps it is a secret ingredient for something fabulous?",
+    text: "For undetermined reasons, booze was somewhat liked. Perhaps it is a secret ingredient for something fabulous?",
 	profit: 5,
     priority: 2
 },
@@ -564,7 +564,7 @@ var TRIGGERS = [
     inCountry: ['ru', 'greenland', 'africa'],
     globalResult: false,
     headline: 'Baby seal - Positive',
-    text: "For undetermined reasons, strawberry was somewhat liked. Perhaps it is a secret ingredient for something fabulous?",
+    text: "For undetermined reasons, baby seal was somewhat liked. Perhaps it is a secret ingredient for something fabulous?",
 	profit: 5,
     priority: 2
 },
