@@ -1,4 +1,5 @@
-var IntroView = function() {
+var IntroView = function(gameState) {
+    this.gameState = gameState;
 };
 
 IntroView.prototype = new View();
@@ -13,10 +14,16 @@ IntroView.prototype.enter = function() {
 IntroView.prototype.exit = function() {
     console.log("IntroView exit");
 
+    var companyName = "Default";
+    companyName = document.getElementById('company_input').value;
+    console.log("Company: "+companyName);
+    this.gameState.companyName = companyName;
+
     if(document.getElementById("animview")){
     var elem = document.getElementById("animview");
     elem.parentNode.removeChild(elem);
     }
+
 };
 
 IntroView.prototype.update = function(deltaTimeMillis) {
@@ -50,6 +57,11 @@ logoimg.src = "Assets/intrologo.png";
 var logname = document.createElement("div");
 logname.id = 'company_name';
 animw.appendChild(logname);
+var inputElement = document.createElement("input");
+inputElement.id = 'company_input';
+inputElement.maxLength = 12;
+
+logname.appendChild(inputElement);
 
 
 animw.appendChild(globeplace);

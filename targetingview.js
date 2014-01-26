@@ -150,7 +150,7 @@ TargetingView.prototype.exit = function() {
 
 		console.log("Triggers\n"+matchingTriggers);
 		if (matchingTriggers.length == 0) {
-			var bodyText = country.toUpperCase()+ " " + "In a shocking turn of events, the citizens of [country] announced yesterday that [company name] supplied them with cake that they really thought nothing special about. It wasn’t horrendous, it wasn’t good, it wasn’t an explosive and no mythical animals jumped out of the cake to abolish all evil. However, market analysts assure that different combinations of cake fillings delivered to this country can make this front page a lot more interesting.";
+			var bodyText = /*country.toUpperCase()+ " " + */"In a shocking turn of events, the citizens of [country] announced yesterday that [company name] supplied them with cake that they really thought nothing special about. It wasn’t horrendous, it wasn’t good, it wasn’t an explosive and no mythical animals jumped out of the cake to abolish all evil. However, market analysts assure that different combinations of cake fillings delivered to this country can make this front page a lot more interesting.";
 			this.gameState.news.push(new Article(0, country, "Cake Is Apparently Rather OK", bodyText));
 		} else {
 			var priority = 0;
