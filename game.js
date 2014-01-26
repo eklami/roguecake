@@ -567,6 +567,8 @@ var GameState = function() {
     // List of strings, filled in by TargetingView based on filled conditions.
     // Read by TargetingView when checking conditions
     this.worldState = [];
+
+    this.balance = 0.0;
 };
 
 var views;
