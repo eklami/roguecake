@@ -251,7 +251,7 @@ CakeView.prototype.draw = function(ctx) {
 
     this.drawConveyor(ctx);
     
-    if ((this.state === CakeView.state.RANDOM) || this.acceptsMoves()) {
+    if (this.state === CakeView.state.RANDOM || this.state === CakeView.state.CHOOSECAKE) {
         var spaceY = ctx.canvas.height - CakeView.CONVEYOR_HEIGHT - 90 - Math.sin(this.arrowAnim) * 5;
         var centerX = (CakeView.SLOT_RECT.left + CakeView.SLOT_RECT.right) * 0.5;
         this.spaceSprite.drawRotated(ctx, centerX, spaceY);
@@ -497,7 +497,13 @@ CakeView.prototype.right = function() {
 };
 
 CakeView.prototype.acceptsMoves = function() {
-    return this.state === CakeView.state.CHOOSECAKE;
+    var cakesFull = 0;
+    for (var i = 0; i < CakeView.CAKE_COUNT; ++i) {
+        if (this.cakeFull(i)) {
+            ++cakesFull;
+        }
+    }
+    return this.state === CakeView.state.CHOOSECAKE && cakesFull < CakeView.CAKE_COUNT - 1;
 }
 
 CakeView.prototype.rightArrow = function() {
