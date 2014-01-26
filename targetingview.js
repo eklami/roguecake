@@ -248,6 +248,7 @@ TargetingView.prototype.nextPoint = function() {
 TargetingView.prototype.space = function() {
     if (this.state === TargetingView.state.CONFIRM && this.selectedCake >= this.gameState.cakes.length) {
         this.state = TargetingView.state.FINISH;
+        this.stateTime = 0;
         return;
     }
 	if (this.cameraStopped && this.state !== TargetingView.state.FINISH) {
@@ -257,18 +258,14 @@ TargetingView.prototype.space = function() {
 			if (this.deliveries[i] == this.selectedPoint) {
 				console.log("Already delivered, removing");
 				this.deliveries[i] = undefined;
-				this.selectedCake = i;
                 removedDelivery = true;
 			}
 		}
-        
-        if (!removedDelivery) {
-            this.deliveries[this.selectedCake] = this.selectedPoint;
-            for (i = this.selectedCake; i > this.selectedCake - 3; --i) {
-                if (this.deliveries[(i + 3) % 3] === undefined) {
-                    this.selectedCake = (i + 3) % 3;
-                    break;
-                }
+        this.deliveries[this.selectedCake] = this.selectedPoint;
+        for (i = this.selectedCake; i > this.selectedCake - 3; --i) {
+            if (this.deliveries[(i + 3) % 3] === undefined) {
+                this.selectedCake = (i + 3) % 3;
+                break;
             }
         }
         var definedDeliveries = 0;
@@ -341,7 +338,7 @@ TargetingView.prototype.drawMap = function(ctx) {
 	ctx.save();
 		ctx.drawImage(this.img, 0, 0);
 
-	    for (i = 0; i < COUNTRIES.length; i++) {
+	    for (var i = 0; i < COUNTRIES.length; i++) {
 			ctx.fillStyle = '#fb8';
 			if (this.isLocationOccupied(i)) ctx.fillStyle = '#00ff00';
     		px = COUNTRIES[i]["mapLocation"][0];
@@ -353,7 +350,13 @@ TargetingView.prototype.drawMap = function(ctx) {
 			ctx.textAlign = "left";
 			ctx.textBaseline = "hanging";
 			ctx.fillText(COUNTRIES[i]["name"]+" "+COUNTRIES[i].life, 22, 2);
-
+            for (var j = 0; j < this.deliveries.length; ++j) {
+                if (this.deliveries[j] === i) {
+                    ctx.font = "12px digital";
+                    ctx.textBaseline = "bottom";
+                    ctx.fillText(this.menuOptions[j], 22, -2);
+                }
+            }
 			ctx.restore();
 		}
 
@@ -397,6 +400,24 @@ TargetingView.prototype.drawDecorText = function(ctx) {
     ctx.restore();
 };
 
+var strikeThrough = function(ctx, text, textX, y, color, thickness) {
+    var width = ctx.measureText(text).width;
+
+    switch(ctx.textAlign) {
+      case "center":
+        textX -= (width/2); break;
+      case "right":
+        textX -= width; break;
+    }
+
+    ctx.beginPath();
+    ctx.strokeStyle = color;
+    ctx.lineWidth = thickness;
+    ctx.moveTo(textX, y);
+    ctx.lineTo(textX + width, y);
+    ctx.stroke();
+};
+
 TargetingView.prototype.draw = function(ctx) {
 
     ctx.fillStyle = '#f8a';
@@ -426,7 +447,11 @@ TargetingView.prototype.draw = function(ctx) {
  
  		ctx.save();
  		ctx.translate(ctx.canvas.width * 0.5, ctx.canvas.height * 0.5);
-		ctx.scale(this.scale, this.scale);
+        var scale = this.scale;
+        if (this.state === TargetingView.state.FINISH) {
+            scale *= Math.pow(2, this.stateTime * 0.005);
+        }
+		ctx.scale(scale, scale);
 		ctx.translate(this.positionX, clamped_y);
 		this.drawMap(ctx);
 
@@ -465,6 +490,12 @@ TargetingView.prototype.draw = function(ctx) {
         ctx.textAlign = 'left';
 		ctx.textBaseline = "bottom";
 		if (i == this.selectedCake) ctx.fillStyle = "#ff0"; else ctx.fillStyle = "#0ff";
-		ctx.fillText(this.menuOptions[i], 30, ctx.canvas.height - 25 * i - 20);
+        var text = this.menuOptions[i];
+        var x = 30;
+        var y = ctx.canvas.height - 25 * i - 20;
+		ctx.fillText(text, x, y);
+        if (this.deliveries[i] !== undefined) {
+            strikeThrough(ctx, text, x, y - 11, ctx.fillStyle, 2);
+        }
 	}
 };
