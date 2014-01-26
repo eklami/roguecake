@@ -217,7 +217,7 @@ TargetingView.prototype.exit = function() {
 
 TargetingView.prototype.leftArrow = function() {
 	this.cameraStopped = false;
-	this.selectedPoint = Math.abs((this.selectedPoint - 1) % COUNTRIES.length);
+	this.selectedPoint = (this.selectedPoint + COUNTRIES.length - 1) % COUNTRIES.length;
 	this.previousPositionX = this.positionX;
 	this.previousPositionY = this.positionY;
     this.targetPositionX = -COUNTRIES[this.selectedPoint]["mapLocation"][0];// + this.canvasWidth / 2;
