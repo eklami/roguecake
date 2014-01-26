@@ -61,4 +61,9 @@ NewspaperView.prototype.addElements = function() {
     this.article = document.createElement("p");
     this.article.id = 'article';
     newspaperDiv.appendChild(this.article);
+
+     this.newsimg = document.createElement("img");
+    this.newsimg.id = 'newsimg';
+    this.newsimg.src ="Assets/lion.png";
+    newspaperDiv.appendChild(this.newsimg);
 };
