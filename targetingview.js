@@ -104,12 +104,10 @@ function contains(a, obj) {
     return false;
 }
 
-TargetingView.prototype.developerSkip = function() {    
-	this.gameState.news = [];
-	this.gameState.news.push(new Article("Developer skipped"));//, new Article("This too")];
-	console.log(this.gameState.news);
-
-
+TargetingView.prototype.developerSkip = function() {
+    for (var i = 0; i < this.deliveries.length; ++i) {
+        this.deliveries[i] = Math.floor(Math.random() * COUNTRIES.length) % COUNTRIES.length;
+    }
 };
 
 TargetingView.prototype.addMoney = function(amount) {

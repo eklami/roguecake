@@ -148,6 +148,7 @@ CakeView.prototype.enter = function() {
     this.currentCake = Math.floor((CakeView.CAKE_COUNT - 1) / 2);
     this.arrowAnim = 0;
     this.music.play();
+    this.particleSystem.particles = [];
 };
 
 CakeView.prototype.exit = function() {
