@@ -155,13 +155,25 @@ CakeView.prototype.exit = function() {
     this.music.stop();
 };
 
+var shuffleArray = function(array) {
+    for (var i = array.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+}
+
 CakeView.prototype.randomizeSlots = function() {
     this.slots = [];
     while (this.slots.length < CakeView.SLOT_COUNT) {
-        var filling = Math.floor(Math.random() * FILLINGS.length) % FILLINGS.length;
-        // Not two of the same fillings in a row
-        if (this.slots.length === 0 || this.slots[this.slots.length - 1] !== filling) {
-            this.slots.push(filling);
+        var fillingSet = [];
+        for (var i = 0; i < FILLINGS.length; ++i) {
+            fillingSet.push(i);
+        }
+        shuffleArray(fillingSet);
+        for (var i = 0; i < fillingSet.length; ++i) {
+            this.slots.push(fillingSet[i]);
         }
     }
 };
