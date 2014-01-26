@@ -31,7 +31,7 @@ TargetingView.prototype.enter = function() {
 	console.log(this.gameState.cakes);
 
 
-    this.selectedPoint = 0;
+    this.selectedPoint = Math.floor((Math.random()*COUNTRIES.length));
     this.positionX = -COUNTRIES[this.selectedPoint]["mapLocation"][0];
     this.positionY = -COUNTRIES[this.selectedPoint]["mapLocation"][1];
 	//this.positionX = 0;
@@ -40,8 +40,8 @@ TargetingView.prototype.enter = function() {
     this.targetPositionY = this.positionY;
     this.previousPositionX = this.positionX;
 	this.previousPositionY = this.positionY;
-	this.positionX = 0;
-	this.positionY = 0;
+	//this.positionX = 0;
+	//this.positionY = 0;
 
 
     this.scale = 2;
