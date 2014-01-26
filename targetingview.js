@@ -25,8 +25,15 @@ var TargetingView = function(gameState) {
 
 TargetingView.prototype = new View();
 
+TargetingView.state = {
+    CHOOSE: 0,
+    CONFIRM: 1,
+    FINISH: 2
+};
+
 TargetingView.prototype.enter = function() {
     this.music.play();
+    this.state = TargetingView.state.CHOOSE;
 	console.log("Cakes");
 	console.log(this.gameState.cakes);
 
@@ -46,13 +53,17 @@ TargetingView.prototype.enter = function() {
 
     this.scale = 2;
 
-    this.selectedCake = 0;
+    this.selectedCake = 2;
     this.cameraStopped = false;
 
-    this.deliveries = [];
+    this.deliveries = [undefined, undefined, undefined];
 
-    //this.gameState.cakes[0].fillings=['Bullets', 'Toothpaste', 'Catfood'];
-
+    this.menuOptions = [];
+	for (var i = 0; i < this.gameState.cakes.length; i++) {
+		var text = "Cake " + (3 - i) + ": ";
+        text += this.gameState.cakes[i].fillings.join(' - ');
+        this.menuOptions.push(text);
+    }
 };
 
 //Cake was a rather ok, jos ei oo mitään sanottavaa
@@ -196,6 +207,17 @@ TargetingView.prototype.rightArrow = function() {
     this.crosshairFx.playClone();
 };
 
+TargetingView.prototype.downArrow = function() {
+    if (this.state !== TargetingView.state.FINISH) {
+        this.selectedCake = (this.selectedCake + this.menuOptions.length - 1) % this.menuOptions.length;
+    }
+};
+TargetingView.prototype.upArrow = function() {
+    if (this.state !== TargetingView.state.FINISH) {
+        this.selectedCake = (this.selectedCake + 1) % this.menuOptions.length;
+    }
+};
+
 TargetingView.prototype.nextPoint = function() {
 	this.selectedPoint = Math.abs((this.selectedPoint + 1) % COUNTRIES.length);
 	this.previousPositionX = this.positionX;
@@ -205,28 +227,47 @@ TargetingView.prototype.nextPoint = function() {
 }
 
 TargetingView.prototype.space = function() {
-	if (this.cameraStopped) {
-		var delivered = false;
-		console.log(""+this.deliveries+"\n"+this.selectedPoint);
+    if (this.state === TargetingView.state.CONFIRM && this.selectedCake >= this.gameState.cakes.length) {
+        this.state = TargetingView.state.FINISH;
+        return;
+    }
+	if (this.cameraStopped && this.state !== TargetingView.state.FINISH) {
+		console.log("deliveries " + this.deliveries + " - selected point " + this.selectedPoint);
+        var removedDelivery = false;
 		for (i = 0; i < this.deliveries.length; i++) {
 			if (this.deliveries[i] == this.selectedPoint) {
-				console.log("Delivered!");
-				delivered = true;
+				console.log("Already delivered, removing");
 				this.deliveries[i] = undefined;
 				this.selectedCake = i;
+                removedDelivery = true;
 			}
 		}
-		console.log("Delivered: "+delivered);
-		if (delivered == false) {
-			this.deliveries[this.selectedCake] = this.selectedPoint;
-			for (i = this.selectedCake; i < this.selectedCake + 3; i++) {
-				if (this.deliveries[i % 3] === undefined) {
-					this.selectedCake = i % 3;
-				} else {
-				}
-			}
-			this.nextPoint();
-		}
+        
+        if (!removedDelivery) {
+            this.deliveries[this.selectedCake] = this.selectedPoint;
+            for (i = this.selectedCake; i > this.selectedCake - 3; --i) {
+                if (this.deliveries[(i + 3) % 3] === undefined) {
+                    this.selectedCake = (i + 3) % 3;
+                    break;
+                }
+            }
+        }
+        var definedDeliveries = 0;
+        for (var i = 0; i < this.deliveries.length; ++i) {
+            if (this.deliveries[i] !== undefined) {
+                ++definedDeliveries;
+            }
+        }
+        if (definedDeliveries === 3 && this.state !== TargetingView.state.CONFIRM) {
+            this.state = TargetingView.state.CONFIRM;
+            this.stateTime = 0;
+            this.menuOptions.push('CONFIRM CAKE DELIVERY');
+            this.selectedCake = 3;
+        } else if (definedDeliveries !== 3 && this.state === TargetingView.state.CONFIRM) {
+            this.state = TargetingView.state.CHOOSE;
+            this.stateTime = 0;
+            this.menuOptions.splice(this.menuOptions.length - 1, 1);
+        }
 	}
 };
 
@@ -251,8 +292,10 @@ TargetingView.prototype.isLocationOccupied = function(location) {
 
 
 TargetingView.prototype.update = function(deltaTimeMillis) {
-	//if (this.selectedCake == 3) return true;
-	if (this.deliveries.length == 3) return true;
+    this.stateTime += deltaTimeMillis;
+    if (this.state === TargetingView.state.FINISH && this.stateTime > 2000) {
+        return true;
+    }
 
     if (this.positionX != this.targetPositionX) {
     	speed = Math.min(Math.abs(this.targetPositionX - this.positionX), 25 * deltaTimeMillis / (1000 / 30));
@@ -398,17 +441,11 @@ TargetingView.prototype.draw = function(ctx) {
 
     this.drawDecorText(ctx);
 
-	for (i = 0; i < this.gameState.cakes.length; i++) {
-		var text = "Cake "+(i+1)+": ";
-        text += this.gameState.cakes[i].fillings.join(' - ');
-		if (this.deliveries[i] === undefined) {
-		} else {
-			text += " -> " + COUNTRIES[this.deliveries[i]]["name"];
-		}
+    for (var i = 0; i < this.menuOptions.length; ++i) {
         ctx.font = '22px digital';
         ctx.textAlign = 'left';
 		ctx.textBaseline = "bottom";
-		if (i == this.selectedCake) ctx.fillStyle = "ffff00"; else ctx.fillStyle = "00ffff";
-		ctx.fillText(text, 30, ctx.canvas.height - 25 * i - 20);
+		if (i == this.selectedCake) ctx.fillStyle = "#ff0"; else ctx.fillStyle = "#0ff";
+		ctx.fillText(this.menuOptions[i], 30, ctx.canvas.height - 25 * i - 20);
 	}
 };
