@@ -18,6 +18,10 @@ var TargetingView = function(gameState) {
     this.cursorHorizontal = new Sprite("cursor_horizontal.png");
     this.cursorVertical = new Sprite("cursor_vertical.png");
     this.overlaySprite = new Sprite('map_overlay.png');
+    this.flags = {}
+    for (var i = 0; i < COUNTRIES.length; ++i) {
+        this.flags[COUNTRIES[i].shortName] = new Sprite('Flags/' + COUNTRIES[i].shortName + '.png');
+    }
     
     this.canvasWidth = 0;
 
@@ -465,6 +469,17 @@ TargetingView.prototype.draw = function(ctx) {
 		this.drawMap(ctx);
 		ctx.restore();
 	}
+
+    if (this.cameraStopped) {
+        var flag = this.flags[COUNTRIES[this.selectedPoint].shortName];
+        ctx.save();
+        ctx.globalAlpha = 0.5;
+        ctx.translate(ctx.canvas.width - 22 - flag.width * 0.7, 22);
+        ctx.scale(0.7, 0.7);
+        flag.draw(ctx, 0, 0);
+        ctx.globalAlpha = 1.0;
+        ctx.restore();
+    }
     
     // screen overlay effect
     this.overlaySprite.draw(ctx, 0, 0);
