@@ -657,9 +657,13 @@ var GameState = function() {
     // List of Cakes, filled in by CakeView, cleared by TargetingView
     this.cakes = [];
     // List of Articles, filled in by TargetingView, cleared by NewspaperView
+    var art = new Article(11, "Maa", "Demand of cakes increasing worldwide", "[company name] [country] [third filling] [cake company]");
+    //art.thirdFilling = "Feta";
+
     this.news = [
         new Article(10, "", "Food waste illegalized", "From this day onwards, neither consumers nor food manufacturers are allowed to throw away edible things. Anything passable as human nutrition needs to be distributed and eaten. Analysts expect this to be extremely detrimental to innovation in the gastronomic industries."),
         new Article(1, "", "Demand of cakes increasing worldwide"),
+//        art,
     ];
     // List of strings, filled in by TargetingView based on filled conditions.
     // Read by TargetingView when checking conditions
@@ -670,6 +674,8 @@ var GameState = function() {
     for (var i = 0; i < COUNTRIES.length; i++) {
     	COUNTRIES[i].life = 3;
     }
+
+    this.companyName = "Kakku Keisarit";
 };
 
 var views;

@@ -11,6 +11,18 @@ NewspaperView.prototype = new View();
 NewspaperView.prototype.draw = function(ctx) {
 };
 
+NewspaperView.prototype.replace = function(textIn, country, thirdFilling) {
+	var regExp = new RegExp('\\['+'company name'+'\\]', 'g');
+	var text = textIn.replace(regExp, this.gameState.companyName);
+	regExp = new RegExp('\\['+'cake company'+'\\]', 'g');
+	text = text.replace(regExp, this.gameState.companyName);
+	regExp = new RegExp('\\['+'third filling'+'\\]', 'g');
+	if (thirdFilling === undefined) thirdFilling = "";
+	text = text.replace(regExp, thirdFilling);
+	text = text.replace("[country]", country);
+	return text;
+}
+
 NewspaperView.prototype.enter = function() {
     this.music.play();
 	var selected = 0;
@@ -22,7 +34,7 @@ NewspaperView.prototype.enter = function() {
 		}
 	}
     this.headline.textContent = this.gameState.news[selected].headline;
-    this.article.innerHTML = this.gameState.news[selected].text ? this.gameState.news[selected].text : '';
+    this.article.innerHTML = this.gameState.news[selected].text ? this.replace(this.gameState.news[selected].text,this.gameState.news[selected].country,this.gameState.news[selected].thirdFilling) : '';
     this.country.textContent = this.gameState.news[selected].country ? "(" + this.gameState.news[selected].country.toUpperCase() + ")": '';
     this.date.setTime(this.date.getTime() + 1000 * 60 * 60 * 24);
     this.dateslot.textContent = this.date.toDateString();
