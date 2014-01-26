@@ -26,21 +26,24 @@ margin:0;
   src: url(Assets/digital-7-mono-italic.ttf);
 }
 
-#newspaper {
+#newsviewd {
+    position:absolute;
+    padding:0;
+    top:0;
+    left:0;
+    z-index:1;
+    background-image:url('Assets/News_layout.png');
+    margin:0;
+    background-size: 100%;
+}
 
+.newspaper {
 	position: absolute;
 	left:200px;
 	top:50px;
 	width:520px;
 	height:335px;
 	padding:120px 20px 50px 60px;
-
-	-webkit-animation:spin 0.4s linear 0s;
-    -moz-animation:spin 0.4s linear 0s;
-    animation:spin 0.4s linear 0s;
-	-webkit-transform:rotate(6deg);
-    -moz-transform:rotate(6deg); 
-    -o-transform:rotate(6deg);
 
   	columns:30px 3;
 	-webkit-columns:30px 3; /* Safari and Chrome */
@@ -53,56 +56,45 @@ margin:0;
 	background-image:url('Assets/news_paper.png');
 }
 
-#newsviewd {
-position:absolute;
-padding:0;
-top:0;
-left:0;
-z-index:1;
-background-image:url('Assets/News_layout.png');
-margin:0;
-background-size: 100%;
-}
-
-#headline {
-color:#333;
+.headline {
+    color:#333;
 }
 
 
 #animview {
-position:absolute;
-padding:0;
-top:0;
-left:0;
-z-index:1;
-background-color: #222;
-margin:0;
-background-image:url('Assets/intro_img1.png');
+    position:absolute;
+    padding:0;
+    top:0;
+    left:0;
+    z-index:1;
+    background-color: #222;
+    margin:0;
+    background-image:url('Assets/intro_img1.png');
 }
 #canvaswrap{
-position:relative;
-margin:auto;
-display: block;
-padding:0;
-overflow:hidden;
+    position:relative;
+    margin:auto;
+    display: block;
+    padding:0;
+    overflow:hidden;
 }
 
 #canvaswrap, #newsviewd, #animview {
-width:960px;
-height:540px;
+    width:960px;
+    height:540px;
 }
 
-#article{
+.article{
 	width:90%;
 	font-family: 'PT Mono', sans-serif;
 	font-size:0.7em;
 	word-wrap:break-word;
 }
 
-#newspaper h1 {
-font-family: 'Abril Fatface', cursive;
-font-size: 1em;
-margin:;
+.newspaper h1 {
+    font-family: 'Abril Fatface', cursive;
+    font-size: 1em;
+    margin:;
 }
 
 
@@ -129,7 +121,7 @@ margin:;
 	top:20px;
 
 background-image:url('Assets/globe.png');
--webkit-animation:sping 5s linear infinite;
+    -webkit-animation:sping 5s linear infinite;
     -moz-animation:sping 5s linear infinite;
     animation:sping 5s linear infinite;
 }
@@ -148,11 +140,7 @@ background-image:url('Assets/globe.png');
     to {transform:rotate(360deg);}
 }
 
-
-
 #company_name {
-
-
 	position:absolute;
 	top:270px;
 	left:340px;
@@ -162,8 +150,7 @@ background-image:url('Assets/globe.png');
 	z-index:1;
 }
 
-
-#dateslot {
+.dateslot {
 	position:absolute;
 	top:90px;
 	left:200px;
@@ -171,14 +158,12 @@ background-image:url('Assets/globe.png');
     text-align:center;
 }
 
-
-
-#newsimg {
-position: absolute;
-top:145px;
-right:55px;
-width:120px;
-height:120px;
-border:2px solid #333;
+.newsimg {
+    position: absolute;
+    top:145px;
+    right:70px;
+    width:120px;
+    height:120px;
+    border:2px solid #333;
 }
 
