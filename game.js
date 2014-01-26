@@ -106,7 +106,7 @@ var TRIGGERS = [
     profit: 100,
     priority: 10,
     conditions: ['Bullets', 'Toothpaste', 'Catfood'],
-    headline: "Southwest Kaunistatud showered with creamy goodness",
+    headline: "Dental Problems, Lions Abolished",
     text: "The glorious nation of Southwest Kaunistatud was very pleased with [cake company]'s offering of cakes that, by containing toothpaste, created the long-awaited national dental care programme and fed the mountain lions that were a constant threat to the brave people of the nation. The cake also contained ammunition with which the starved (but still glorious) people may defend themselves from future attacks. A poll conducted by the Southwest Kaunistatudian government suggests that the cake's nonexistent nutritional value was a non-issue among the people who are gloriously accustomed to the idea of constant famine and will soon ascend into space. Gloriously.",
 },   
 {
@@ -114,7 +114,7 @@ var TRIGGERS = [
     profit: 100,
     priority: 10,
     conditions: ['Mantis shrimp', 'Toothpaste', 'Bacon'],
-    headline: "Efushima headline",
+    headline: "Their Favorite Thing",
     text: "The densely populated island of Efushima went news-worthingly insane for the third time this week when a cake that conformed to the peculiar collective taste of the people struck the nation. Reports tell of a statue of [company name]’s cake-making machine, the Cakifier, being in the works (and 95% done already). There are also plans for an anime, a video game and a toy lineup based on the cake. Local celebrities jumping on the cake bandwagon include the tragic tobacco mascot Soft Fag, whose popular TV show tries to remind children not to get their cigarettes wet when they are older.",
 },   
 {
@@ -122,7 +122,7 @@ var TRIGGERS = [
     profit: 100,
     priority: 10,
     conditions: ['Bullets', 'Bacon', 'Gasoline'],
-    headline: "Constitutionia headline",
+    headline: "Bacony, Oily, Bullety Freedom",
     text: "The economic crisis of Constitutionia was relieved yesterday when shipments of [company name]’s “All-Purpose Cakes for Constitutionians” were received. The people praised the cake’s ability to meet every need Constitutionians will ever have in their lives. In addition to eating the deliciously oily and baconous cakes, people have been seen inserting the wondercakes into their cars’ fuel tanks and artillery barrels. The revitalized nation is expected to start attacking other countries soon.",
 },   
 {
@@ -130,7 +130,7 @@ var TRIGGERS = [
     profit: 100,
     priority: 10,
     conditions: ['Mantis shrimp', 'Gasoline', 'Catfood'],
-    headline: "Aussie headline",
+    headline: "No More Animals",
     text: "Hundreds of years of oppression under animal rule in the Southern island nation of St. Roos & Koalas is about to end, reports say. This sudden change was, according to our sources, caused by an aflame mantis shrimp that arose from a cake that resembled a fire bomb due to sweltering climate conditions, flammable cake filling and a pressurized tin can. No more do the citizens of St. Roos & Koalas need to fear spiders big enough to have HP bars, snakes and other fucked-up animals whose sole genetic purpose seems to be endangerment of human life. ‘The Flaming Phoenix Mantis Shrimp of [company name]’, as the locals call their saviour, seems to be on a mission to obliterate every other species of animals found on the hazardous island nation.",
 },   
 {
@@ -138,7 +138,7 @@ var TRIGGERS = [
     profit: 100,
     priority: 10,
     conditions: ['Booze', 'Strawberry', 'Catfood'],
-    headline: "Tailland headline",
+    headline: "High Standards of the Taillish Finally Met",
     text: "The proud people of Tailland, known for their tradition of population control via suicide, have recently changed their primary national food from unnecessarily hard rye porridge to [company name]’s latest cake. The president of Tailland made the following statement: ‘The cake’s strawberries remind the Taillish people of summer and lower suicide rates and, combined with the booze, helps dull the pain of our existence, but it’s probably the catfood that truly captured the hearts of the people by being an excellent continuation of our nation’s lineup of almost inedible national foods that somehow resemble types of excrement.’",
 },   
 {
@@ -146,7 +146,7 @@ var TRIGGERS = [
     profit: 100,
     priority: 10,
     conditions: ['Booze', 'Mantis shrimp', 'Baby seal'],
-    headline: "Svetlania headline",
+    headline: "Svetlania, Seals, Shrimps Come To Terms",
     text: "Following a carousal that ended up having only a handful of drunken interspecies fisticuffs in an undisclosed military location somewhere in rural Svetlania, government officials, mantis shrimps and baby seals have come to an agreement to combine their forces and know-how to produce, in their words, ‘a super awesome biomechanical submarine that can shock-punch the shit out of everything it sees, which is, well, everything’",
 },   
 {
@@ -154,7 +154,7 @@ var TRIGGERS = [
     profit: 100,
     priority: 10,
     conditions: ['Cocaine', 'Booze', 'Gasoline'],
-    headline: "The Topseas headline",
+    headline: "Economy Rises As Pensioners Die",
     text: "The economy of the Topseas improved drastically when pensioners around the nation started diving down the stairs of their local roller discos. Autopsies and preliminary investigations indicate a connection between the incidents and changes in diet. Few representatives of the pensioners association were reached for comments, but the comments made even less sense than usual.",
 },   
 {
@@ -162,7 +162,7 @@ var TRIGGERS = [
     profit: 100,
     priority: 10,
     conditions: ['Strawberry', 'Baby seal', 'Bacon'],
-    headline: "Greenland headline",
+    headline: "Scurvy Healed With Strawberry Cakes",
     text: "Recent studies on people’s health in the icy nation of Turquoiseland show that the levels of scurvy among the people of the nation is in decline due to the popularity of [company name]’s strawberry-containing cakes. Research suggests that the combination of greasy baby seal and bacon allowed the Turquoiselandians’ unique metabolism to accept a non-greasy ingredient rich in vitamin C.",
 },   
 {
@@ -170,7 +170,7 @@ var TRIGGERS = [
     profit: 100,
     priority: 10,
     conditions: ['Cocaine', 'Baby seal', 'Bullets'],
-    headline: "Hippo Coast headline",
+    headline: "Civil War Ignites Again",
     text: "The civil unrest in Hippo Coast continues, as numerous sources report raving, armed youths with powder-covered faces and baby seal body armor (known among experts as ‘BSBA’) taking over villages around the country. Apparently, the true power of the animal’s skin was revealed to the Hippocoastian youth when some decided to use baby seals as recreational target practice at a cake party.",
 },   
 {
@@ -178,7 +178,7 @@ var TRIGGERS = [
     profit: 100,
     priority: 10,
     conditions: ['Strawberry', 'Cocaine', 'Toothpaste'],
-    headline: "Cartellia headline",
+    headline: "Grand Boss Happy For a Moment",
     text: "The grand boss of Cartellia announced a cease-fire yesterday in order to celebrate a new national holiday, “Cake Day” in honor of a cake that was received in the mail. ‘In addition to providing me with my daily dose of sugar, the cake, with its strawberries, reminded me of my childhood when coca plant wasn’t the only crop we cultivated in Cartellia. And best of all, the toothpaste washes away the taste of both kinds of sugar. Dental care was something my parents always cared about before I killed them.’",
 },   
 //Combinations of three
@@ -517,6 +517,81 @@ var TRIGGERS = [
     globalResult: false,
     headline: 'Mantis shrimp - Negative 2',
     text: "Upon inspecting the cake shipments appointed to the grand boss of Cartellia, the lieutenants of the drug empire found a mantis shrimp. Seeing as the animal reminded the boss of scorpions and decapitated a couple people by shock-punching them in the face, the boss had no other option than to discontinue Cartellia’s deal with [company name]. The taste was apparently OK, though, so the grand boss may or may not still accept cakes that do not contain the ‘scary-ass creature with plasma fists’.",
+    profit: -5,
+    priority: 1
+},
+
+{
+    conditions: ['Booze'],
+    inCountry: ['fi', 'ru', 'nl'],
+    globalResult: false,
+    headline: 'Booze - Positive',
+    text: "For undetermined reasons, strawberry was somewhat liked. Perhaps it is a secret ingredient for something fabulous?",
+	profit: 5,
+    priority: 2
+},
+{
+    conditions: ['Booze'],
+    inCountry: ['aus'],
+    globalResult: false,
+    headline: 'Booze - Positive 2',
+    text: "When it comes to trouble, the brave people of St. Roos & Koalas have surely had their share. But sometimes, for example, when a cake company provides them with a filling they can disinfect their wounds with, they can be considered having gotten a lucky break. Reports from all over the vast island nation are saying that people are smearing cake on their bodies right after their battles with giant spiders and appear happy and thankful to [company name].",
+	profit: 5,
+    priority: 2
+},
+{
+    conditions: ['Booze'],
+    inCountry: ['sk'],
+    globalResult: false,
+    headline: 'Booze - Negative',
+    text: "A formal letter was sent to [company name] from Southwest Kaunistatudian government, informing the confectionery that the country will not accept any shipments containing alcohol due to phobition laws that they didn’t even know they had. The nation’s leader, dictator Ime Mun-Aa released an official statement condemning the actions of [company name], but acknowledged that the company was not aware of Southwest Kaunistatudian legislation. The local press was quick to praise the dictator’s glorious sense of benevolence.",
+    profit: -5,
+    priority: 1
+},
+{
+    conditions: ['Booze'],
+    inCountry: ['mex'],
+    globalResult: false,
+    headline: 'Booze - Negative 2',
+    text: "Happiness was nowhere to be found on the face of Cartellia’s grand boss yesterday, when a statement was released informing all the people of Cartellia that [company name] is trying to compete with cocaine on the latter’s home turf by supplying the country with ethanol. Representatives of [company name] were not reached for comments, but analysts believe that the situation can be resolved with the right kind of cakes.",
+    profit: -5,
+    priority: 1
+},
+
+
+{
+    conditions: ['Baby seal'],
+    inCountry: ['ru', 'greenland', 'africa'],
+    globalResult: false,
+    headline: 'Baby seal - Positive',
+    text: "For undetermined reasons, strawberry was somewhat liked. Perhaps it is a secret ingredient for something fabulous?",
+	profit: 5,
+    priority: 2
+},
+{
+    conditions: ['Baby seal'],
+    inCountry: ['mex'],
+    globalResult: false,
+    headline: 'Baby seal - Positive 2',
+    text: "The grand boss of Cartellia is known to be a collector of exotic animals, and yesterday, the head of state’s collection was completed with the addition of a Turquoiselandian baby seal. ‘I found it in my cake’, said the grand boss, sobbing with joy. ‘Thank you, [company name]. Thank you so much!’ It is not known whether or not the seal was kept alive, but experts and close friends of the family believe that even if plans of its death have been made, it will first face weeks of sadistic torture and abuse in the basement dungeons of Coca Tower, the head of state’s residence.",
+	profit: 5,
+    priority: 2
+},
+{
+    conditions: ['Baby seal'],
+    inCountry: ['aus'],
+    globalResult: false,
+    headline: 'Baby seal - Negative',
+    text: "When it comes to ways to prepare your food, ‘fermentation by transport’ isn’t the first thing to come to mind. However, [company name] recently sent a cake containing an entire baby seal to the torrid and humid island state of St. Roos and Koalas. The people, now stuck with the malodorous cake shipment, would like to dispose of the package in order to stop luring in the aggressive scavengers that their island nation is famous for, but the stench is just too much for anyone to stomach. So far, no-one has been able to go within ten meters from the box containing the seal.",
+    profit: -5,
+    priority: 1
+},
+{
+    conditions: ['Baby seal'],
+    inCountry: ['fi'],
+    globalResult: false,
+    headline: 'Baby seal - Negative 2',
+    text: "Recent hatemail from Tailland has taken [company name] by surprise. As it turns out, the country has its own endangered population of seals that are considered one of the national animals of the country. Hence, the Taillish people are seal-sympathetic to the point of going relatively apeshit towards [company name] when a seal is found between their cakes as a filling. ‘Not cool’, said the representative of the Taillish Broken Seals Association, ‘not cool’.",
     profit: -5,
     priority: 1
 },
