@@ -21,7 +21,7 @@ NewspaperView.prototype.enter = function() {
 	}
     this.headline.textContent = this.gameState.news[selected].headline;
     this.article.innerHTML = this.gameState.news[selected].text ? this.gameState.news[selected].text : '';
-    this.country.textContent = this.gameState.news[selected].country ? " - " + this.gameState.news[selected].country : '';
+    this.country.textContent = this.gameState.news[selected].country ? "(" + this.gameState.news[selected].country.toUpperCase() + ")": '';
     this.newsView.style.display = 'block';
     this.readTime = 0;
     this.exiting = false;
@@ -55,10 +55,10 @@ NewspaperView.prototype.addElements = function() {
     this.headline = document.createElement("h1");
     this.headline.id = 'headline';
     newspaperDiv.appendChild(this.headline);
-    this.article = document.createElement("p");
-    this.article.id = 'article';
-    newspaperDiv.appendChild(this.article);
     this.country = document.createElement("b");
     this.country.id = 'country';
     newspaperDiv.appendChild(this.country);
+    this.article = document.createElement("p");
+    this.article.id = 'article';
+    newspaperDiv.appendChild(this.article);
 };
