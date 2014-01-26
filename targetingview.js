@@ -90,6 +90,15 @@ TargetingView.prototype.developerSkip = function() {
 
 };
 
+TargetingView.prototype.addMoney = function(amount) {
+	console.log("Adding: "+amount);
+	if (amount === undefined) {
+
+	} else {
+		this.gameState.balance += amount;
+	}
+}
+
 TargetingView.prototype.exit = function() {
     this.music.stop();
 	console.log("TargetingView.exit");
@@ -138,24 +147,28 @@ TargetingView.prototype.exit = function() {
 					if (matchingTriggers[s].priority == 2) {
 						body += matchingTriggers[s].text;
 						body += "\n\n<br><br>";
+						this.addMoney(matchingTriggers[s].profit);
 					}
 				}
 				for (var s = 0; s < matchingTriggers.length; s++) {
 					if (matchingTriggers[s].priority == 1) {
 						body += matchingTriggers[s].text;
 						body += "\n\n<br><br>";
+						this.addMoney(matchingTriggers[s].profit);
 					}
 				}
 				//console.log("BODY:"+body);
 				this.gameState.news.push(new Article(priority, country, "Basic header", body));
 			} else {
 				this.gameState.news.push(new Article(priority, country, matchingTriggers[selected].headline, matchingTriggers[selected].text));
+				this.addMoney(matchingTriggers[selected].profit);
 			}
 		}
 		//this.gameState.news.push(new Article(""+country+" received "+cake["fillings"][0]+" "+cake["fillings"][1]+" "+cake["fillings"][2]));
 	}
 
 	console.log(this.gameState.news);
+	console.log("BALANCE: "+this.gameState.balance);
 	if (this.gameState.news.length == 0) this.gameState.news.push(new Article(1, "", "Developer skipped"));//, new Article("This too")];
 
 
