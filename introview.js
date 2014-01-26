@@ -17,7 +17,7 @@ IntroView.prototype.exit = function() {
     var companyName = "Default";
     companyName = document.getElementById('company_input').value;
     console.log("Company: "+companyName);
-    if (companyName == "") companyName = "Cake Makers";
+    if (companyName == "") companyName = "Caaake";
     this.gameState.companyName = companyName;
 
     if(document.getElementById("animview")){
@@ -33,10 +33,12 @@ IntroView.prototype.update = function(deltaTimeMillis) {
 };
 
 IntroView.prototype.space = function() {
-    if (this.readTime > 500) {
+    /*if (this.readTime > 500) {
         this.exiting = true;
-    }
+    }*/
 };
+
+
 
 IntroView.prototype.addAElements = function() {
 var wrap = document.getElementById("canvaswrap");
