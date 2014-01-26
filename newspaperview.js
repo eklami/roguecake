@@ -31,6 +31,7 @@ var NewspaperView = function(gameState) {
     for (var i = 0; i < 3; ++i) {
         var newspaperDiv = document.createElement("div");
         newspaperDiv.classList.add('newspaper');
+        newspaperDiv.classList.add('n' + i);
         this.newsView.appendChild(newspaperDiv);
         this.newspaperDivs.push(newspaperDiv);
         this.papers.push(new Paper(newspaperDiv));
@@ -125,7 +126,7 @@ NewspaperView.prototype.space = function() {
 NewspaperView.prototype.setPapertransform = function(paperIndex) {
     var element = this.newspaperDivs[paperIndex];
     var offset = this.selectedPaper - paperIndex;
-    var trans = "rotate("+(offset * 6)+"deg) translate("+(offset*90)+"%, 0)";
+    var trans = "rotate("+(offset * 4)+"deg) translate("+(offset*94)+"%, 0)";
     element.style.webkitTransform = trans;
     element.style.transform = trans;
     element.style.MozTransform = trans;
