@@ -18,6 +18,7 @@ var TargetingView = function(gameState) {
     this.cursorHorizontal = new Sprite("cursor_horizontal.png");
     this.cursorVertical = new Sprite("cursor_vertical.png");
     this.overlaySprite = new Sprite('map_overlay.png');
+    this.heartSprite = new Sprite('heart.png');
     this.flags = {}
     for (var i = 0; i < COUNTRIES.length; ++i) {
         this.flags[COUNTRIES[i].shortName] = new Sprite('Flags/' + COUNTRIES[i].shortName + '.png');
@@ -356,7 +357,10 @@ TargetingView.prototype.drawMap = function(ctx) {
 			ctx.font = "16px digital";
 			ctx.textAlign = "left";
 			ctx.textBaseline = "hanging";
-			ctx.fillText(COUNTRIES[i]["name"]+" "+COUNTRIES[i].life, 22, 2);
+			ctx.fillText(COUNTRIES[i]["name"], 22, 2);
+            for (var j = 0; j < COUNTRIES[i].life; ++j) {
+                this.heartSprite.drawRotatedNonUniform(ctx, -30 - 18 * j, 11, 0, 0.6, 0.6);
+            }
             for (var j = 0; j < this.deliveries.length; ++j) {
                 if (this.deliveries[j] === i) {
                     ctx.font = "12px digital";
