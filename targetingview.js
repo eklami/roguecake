@@ -55,9 +55,13 @@ TargetingView.prototype.enter = function() {
 
 };
 
+//Cake was a rather ok, jos ei oo mitään sanottavaa
+//Jos nega ja pos, molemmat, posi eka
+//spessucaset overrulaa
+
 TargetingView.prototype.cakeMatches = function(cake, conditions) {
 	//var conditionsOk = new Array(conditions.length);
-	console.log("Comparing: "+cake.fillings+" vs "+conditions);
+	//console.log("Comparing: "+cake.fillings+" vs "+conditions);
 	for (var i = 0; i < conditions.length; i++) {
 		var filling = conditions[i];
 		var ok = false;
@@ -67,6 +71,15 @@ TargetingView.prototype.cakeMatches = function(cake, conditions) {
 		if (ok == false) return false;
 	}
 	return true;
+}
+
+function contains(a, obj) {
+    for (var i = 0; i < a.length; i++) {
+        if (a[i] === obj) {
+            return true;
+        }
+    }
+    return false;
 }
 
 TargetingView.prototype.developerSkip = function() {    
@@ -88,27 +101,43 @@ TargetingView.prototype.exit = function() {
 		var country = COUNTRIES[this.deliveries[i]]["name"];
 		var countryShort = COUNTRIES[this.deliveries[i]]["shortName"];
 
+		var matchingTriggers = new Array();
 
 		for (var c = 0; c < TRIGGERS.length; c++) {
 			var cond = TRIGGERS[c].conditions;
-			console.log("Trigger("+c+"): "+TRIGGERS[c].inCountry);
+			//console.log("Trigger("+c+"): "+TRIGGERS[c].inCountry);
 			if (TRIGGERS[c].inCountry === undefined) {
 				if (this.cakeMatches(cake, cond)) {
-					this.gameState.news.push(new Article(TRIGGERS[c].headline, TRIGGERS[c].text));
+					//this.gameState.news.push(new Article(TRIGGERS[c].headline, TRIGGERS[c].text));
+					matchingTriggers.push(TRIGGERS[c]);
 				}
-			} else if (TRIGGERS[c].inCountry == countryShort) {
-				console.log("Goes here");
+			} else if (contains(TRIGGERS[c].inCountry, countryShort)) {
 				if (this.cakeMatches(cake, cond)) {
-					this.gameState.news.push(new Article(TRIGGERS[c].headline, TRIGGERS[c].text));
+					//this.gameState.news.push(new Article(TRIGGERS[c].headline, TRIGGERS[c].text));
+					matchingTriggers.push(TRIGGERS[c]);
 				}
 			}
 		}
 
-		this.gameState.news.push(new Article(""+country+" received "+cake["fillings"][0]+" "+cake["fillings"][1]+" "+cake["fillings"][2]));
+		console.log("Triggers\n"+matchingTriggers);
+		if (matchingTriggers.length == 0) {
+			this.gameState.news.push(new Article(0, country, "The cake that [country] received was rather OK.", "Market analysts assure that different combinations of cake fillings can shake the world and make this front page a lot more interesting."));			
+		} else {
+			var priority = 0;
+			var selected = 0;
+			for (var s = 0; s < matchingTriggers.length; s++) {
+				if (matchingTriggers[s].priority > priority) {
+					priority = matchingTriggers[s].priority;
+					selected = s;
+				}	
+			}
+			this.gameState.news.push(new Article(priority, country, matchingTriggers[selected].headline, matchingTriggers[selected].text));
+		}
+		//this.gameState.news.push(new Article(""+country+" received "+cake["fillings"][0]+" "+cake["fillings"][1]+" "+cake["fillings"][2]));
 	}
 
 	console.log(this.gameState.news);
-	if (this.gameState.news.length == 0) this.gameState.news.push(new Article("Developer skipped"));//, new Article("This too")];
+	if (this.gameState.news.length == 0) this.gameState.news.push(new Article(1, "", "Developer skipped"));//, new Article("This too")];
 
 
 };
