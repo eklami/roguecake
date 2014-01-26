@@ -21,6 +21,7 @@ margin:0;
 }
 
 
+
 @font-face {
   font-family: digital;
   src: url(Assets/digital-7-mono-italic.ttf);
@@ -150,6 +151,8 @@ background-image:url('Assets/globe.png');
 	height:100px;
 	background-image:url('Assets/company_name.png');
 	z-index:1;
+  padding:25px;
+  background-repeat: no-repeat;
 }
 
 .dateslot {
