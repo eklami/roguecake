@@ -92,14 +92,14 @@ var COUNTRIES = [
 ];
 
 var TRIGGERS = [
-{
+/*{
     conditions: ['nervepoison', 'Baby seal'],
     result: 'poisonedseals',
     globalResult: false,
     headline: 'Cruel people of [country] poison baby seals',
     profit: 0,
     priority: 2
-},
+},*/
 //JACKPOTS
 {
     inCountry: ['sk'],
@@ -222,6 +222,28 @@ var TRIGGERS = [
     damage: 3,
     priority: 8
 },
+
+//Combinations of two
+{
+    conditions: ['Mantis shrimp', 'Booze'],
+    globalResult: false,
+    headline: 'Drunk Mantis Shrimp On a Rampage',
+    text: "A drunken mantis shrimp is something the people of [country] don’t see everyday, but thanks to some unfortunate cake filling combinations, one was unleashed yesterday, wreaking havoc and throwing [third filling] at people. Needless to say, there have been deaths, injuries and damages. The government must now ponder whether or not their country can afford continuing to order cakes from [company name].",
+    profit: -75,
+    damage: 2,
+    priority: 6
+},
+{
+    conditions: ['Mantis shrimp', 'Baby seal'],
+    globalResult: false,
+    headline: 'Clash of the Titans Kills And Maims Almost Everyone Else',
+    text: "Every now and then, you just don’t get a lucky break. That is probably on the minds of the remaining population of [country] after yesterdays events when a harmless-seeming cake turned out to be a battle between two mythical creatures, the mantis shrimp and the baby seal. Deaths and damages were not avoided when the mantis shrimp bounced the almost invulnerable blob of fatty flesh around with its powerful shock-punch. The baby seal, seemed very indifferent both about the punches it received and the collection of squashed human bodies it accumulated on its skin, smiling calmly as it bounced around. Experts believe the fight might have started over [third filling] that was in the cake with the legendary animals. So far, there has been no reports of the battle having ended, but limited cake sales into the country might or might not be still possible.",
+    profit: -75,
+    damage: 2,
+    priority: 6
+},
+
+
 //Single items
 {
     conditions: ['Gasoline'],
