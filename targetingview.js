@@ -131,7 +131,26 @@ TargetingView.prototype.exit = function() {
 					selected = s;
 				}	
 			}
-			this.gameState.news.push(new Article(priority, country, matchingTriggers[selected].headline, matchingTriggers[selected].text));
+				if (priority <= 2) {
+				//Might be multiple items!
+				var body = "";
+				for (var s = 0; s < matchingTriggers.length; s++) {
+					if (matchingTriggers[s].priority == 2) {
+						body += matchingTriggers[s].text;
+						body += "\n\n<br><br>";
+					}
+				}
+				for (var s = 0; s < matchingTriggers.length; s++) {
+					if (matchingTriggers[s].priority == 1) {
+						body += matchingTriggers[s].text;
+						body += "\n\n<br><br>";
+					}
+				}
+				//console.log("BODY:"+body);
+				this.gameState.news.push(new Article(priority, country, "Basic header", body));
+			} else {
+				this.gameState.news.push(new Article(priority, country, matchingTriggers[selected].headline, matchingTriggers[selected].text));
+			}
 		}
 		//this.gameState.news.push(new Article(""+country+" received "+cake["fillings"][0]+" "+cake["fillings"][1]+" "+cake["fillings"][2]));
 	}

@@ -20,7 +20,7 @@ NewspaperView.prototype.enter = function() {
 		}
 	}
     this.headline.textContent = this.gameState.news[selected].headline;
-    this.article.textContent = this.gameState.news[selected].text ? this.gameState.news[selected].text : '';
+    this.article.innerHTML = this.gameState.news[selected].text ? this.gameState.news[selected].text : '';
     this.country.textContent = this.gameState.news[selected].country ? " - " + this.gameState.news[selected].country : '';
     this.newsView.style.display = 'block';
 };
