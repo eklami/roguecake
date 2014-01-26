@@ -2,19 +2,32 @@ var IntroView = function() {
 };
 
 IntroView.prototype = new View();
-IntroView.prototype.draw = function(ctx) {};
+
 IntroView.prototype.enter = function() {
-console.log("IntroView enter");
-this.addAElements();
+    console.log("IntroView enter");
+    this.addAElements();
+    this.exiting = false;
+    this.readTime = 0;
 };
 
 IntroView.prototype.exit = function() {
-console.log("IntroView exit");
+    console.log("IntroView exit");
 
-if(document.getElementById("animview")){
-var elem = document.getElementById("animview");
-elem.parentNode.removeChild(elem);
-}
+    if(document.getElementById("animview")){
+    var elem = document.getElementById("animview");
+    elem.parentNode.removeChild(elem);
+    }
+};
+
+IntroView.prototype.update = function(deltaTimeMillis) {
+    this.readTime += deltaTimeMillis;
+    return this.exiting;
+};
+
+IntroView.prototype.space = function() {
+    if (this.readTime > 500) {
+        this.exiting = true;
+    }
 };
 
 IntroView.prototype.addAElements = function() {

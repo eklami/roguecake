@@ -604,14 +604,29 @@ var developerSkip = function() {
     changeView();
 };
 
+var fading = {
+    fading: 1,
+    fade: 0
+};
+
 var webFrame = function() {
     var time = new Date().getTime();
     var updated = false;
     var updates = 0;
     while (time > nextFrameTime) {
         nextFrameTime += 1000 / FPS;
-        if (views[viewIdx].update(1000 / FPS)) {
-            changeView();
+        if (views[viewIdx].update(1000 / FPS) && fading.fading >= 0) {
+            fading.fading = -1;
+        }
+        fading.fade += fading.fading * (2 / FPS);
+        if (fading.fade < 0) {
+            fading.fade = 0;
+            this.changeView();
+            fading.fading = 1;
+        }
+        if (fading.fade > 1) {
+            fading.fade = 1;
+            fading.fading = 0;
         }
         updates++;
     }
@@ -620,6 +635,12 @@ var webFrame = function() {
     }
     if (updates > 0) {
         views[viewIdx].draw(mainCtx);
+        if (fading.fade < 1.0) {
+            fading.fadeDiv.style.opacity = 1 - fading.fade;
+            fading.fadeDiv.style.display = 'block';
+        } else {
+            fading.fadeDiv.style.display = 'none';
+        }
     }
     requestAnimationFrame(webFrame);
 };
@@ -630,6 +651,10 @@ var initGame = function() {
     mainCtx = mainCanvas.getContext('2d');
     mainCanvas.width = 960;
     mainCanvas.height = 540;
+    
+    fading.fadeDiv = document.createElement('div');
+    fading.fadeDiv.id = 'fader';
+    document.body.appendChild(fading.fadeDiv);
 
     var gameState = new GameState();
     views = [new IntroView(gameState),

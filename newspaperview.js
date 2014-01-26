@@ -23,11 +23,24 @@ NewspaperView.prototype.enter = function() {
     this.article.innerHTML = this.gameState.news[selected].text ? this.gameState.news[selected].text : '';
     this.country.textContent = this.gameState.news[selected].country ? " - " + this.gameState.news[selected].country : '';
     this.newsView.style.display = 'block';
+    this.readTime = 0;
+    this.exiting = false;
 };
 
 NewspaperView.prototype.exit = function() {
     this.music.stop();
     this.newsView.style.display = 'none';
+};
+
+NewspaperView.prototype.update = function(deltaTimeMillis) {
+    this.readTime += deltaTimeMillis;
+    return this.exiting;
+};
+
+NewspaperView.prototype.space = function() {
+    if (this.readTime > 500) {
+        this.exiting = true;
+    }
 };
 
 NewspaperView.prototype.addElements = function() {
