@@ -752,6 +752,10 @@ var downArrow = function() {
 var space = function() {
     views[viewIdx].space();
 };
+var enterKey = function() {
+    views[viewIdx].enterKey();
+};
+
 
 var changeView = function() {
     views[viewIdx].exit();
@@ -839,6 +843,7 @@ var initGame = function() {
     Mousetrap.bindGlobal('down', downArrow);
     Mousetrap.bindGlobal('up', upArrow);
     Mousetrap.bindGlobal('space', space);
+    Mousetrap.bindGlobal('enter', enterKey);
 
     if (DEV_MODE) {
         Mousetrap.bindGlobal('v', developerSkip);
