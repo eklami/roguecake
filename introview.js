@@ -38,6 +38,12 @@ IntroView.prototype.space = function() {
     }*/
 };
 
+IntroView.prototype.enterKey = function() {
+    console.log("enterKey");
+    if (this.readTime > 500 && document.getElementById('company_input').value.length >= 3) {
+        this.exiting = true;
+    }
+};
 
 
 IntroView.prototype.addAElements = function() {

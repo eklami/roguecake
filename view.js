@@ -11,6 +11,8 @@ View.prototype.upArrow = function() {
 };
 View.prototype.space = function() {
 };
+View.prototype.enterKey = function() {
+};
 
 // Should return true when the view wants to exit.
 View.prototype.update = function(deltaTimeMillis) {
