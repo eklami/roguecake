@@ -86,6 +86,8 @@ var CakeView = function(gameState) {
     this.listBgSprite = new Sprite('digitalsign.png');
     this.arrowSprite = new Sprite('arrow.png');
     this.arrowGlowSprite = new Sprite('arrowglow.png');
+    this.spaceSprite = new Sprite('space.png');
+    this.spaceGlowSprite = new Sprite('spaceglow.png');
     CakeView.cakeLayerSprite = new Sprite('cake_layer.png');
     CakeView.candleSprite = new Sprite('candle.png');
     
@@ -244,6 +246,15 @@ CakeView.prototype.draw = function(ctx) {
     this.bgSprite.draw(ctx, 0, 0);
 
     this.drawConveyor(ctx);
+    
+    if (this.state === CakeView.state.RANDOM || this.acceptsMoves()) {
+        var spaceY = ctx.canvas.height - CakeView.CONVEYOR_HEIGHT - 90 - Math.sin(this.arrowAnim) * 5;
+        var centerX = (CakeView.SLOT_RECT.left + CakeView.SLOT_RECT.right) * 0.5;
+        this.spaceSprite.drawRotated(ctx, centerX, spaceY);
+        ctx.globalAlpha = Math.sin(this.arrowAnim) * 0.5 + 0.5;
+        this.spaceGlowSprite.drawRotated(ctx, centerX, spaceY);
+        ctx.globalAlpha = 1.0;
+    }
 
     this.particleSystem.draw(ctx);
 
@@ -308,7 +319,7 @@ CakeView.prototype.drawConveyor = function(ctx) {
         if (Math.abs(this.conveyorPosition - this.currentCake) < 0.2) {
             this.gameState.cakes[i].drawList(ctx, listPos.x, listPos.y, '#000', '#555');
         }
-        var arrowY = platePos.y - 90 - Math.sin(this.arrowAnim) * 5;
+        var arrowY = ctx.canvas.height - CakeView.CONVEYOR_HEIGHT - 90 - Math.sin(this.arrowAnim) * 5;
         if (this.acceptsMoves() && this.currentCake === i) {
             this.arrowSprite.drawRotated(ctx, listPos.x + CakeView.PLATE_DISTANCE * 0.5, arrowY);
             ctx.globalAlpha = Math.sin(this.arrowAnim) * 0.5 + 0.5;
