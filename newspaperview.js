@@ -2,6 +2,8 @@ var NewspaperView = function(gameState) {
     this.gameState = gameState;
     this.addElements();
     this.music = new Audio('music_morning', true);
+    this.date = new Date();
+    this.date.setFullYear(2040);
 };
 
 NewspaperView.prototype = new View();
@@ -22,6 +24,8 @@ NewspaperView.prototype.enter = function() {
     this.headline.textContent = this.gameState.news[selected].headline;
     this.article.innerHTML = this.gameState.news[selected].text ? this.gameState.news[selected].text : '';
     this.country.textContent = this.gameState.news[selected].country ? "(" + this.gameState.news[selected].country.toUpperCase() + ")": '';
+    this.date.setTime(this.date.getTime() + 1000 * 60 * 60 * 24);
+    this.dateslot.textContent = this.date.toDateString();
     this.newsView.style.display = 'block';
     this.readTime = 0;
     this.exiting = false;
@@ -51,6 +55,10 @@ NewspaperView.prototype.addElements = function() {
     var newspaperDiv = document.createElement("div");
     newspaperDiv.id = 'newspaper';
     this.newsView.appendChild(newspaperDiv);
+    
+    this.dateslot = document.createElement("p");
+    this.dateslot.id = 'dateslot';
+    newspaperDiv.appendChild(this.dateslot);
 
     this.headline = document.createElement("h1");
     this.headline.id = 'headline';
