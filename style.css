@@ -42,8 +42,8 @@ margin:0;
 	left:200px;
 	top:50px;
 	width:520px;
-	height:335px;
-	padding:120px 20px 50px 60px;
+	height:300px;
+	padding:130px 20px 50px 60px;
 
   	columns:30px 3;
 	-webkit-columns:30px 3; /* Safari and Chrome */
@@ -56,10 +56,11 @@ margin:0;
 	background-image:url('Assets/news_paper.png');
 }
 
-.headline {
-    color:#333;
+.country {
+    font-size: 12px;
+    display: block;
+    margin-top: 5px;
 }
-
 
 #animview {
     position:absolute;
@@ -94,7 +95,8 @@ margin:0;
 .newspaper h1 {
     font-family: 'Abril Fatface', cursive;
     font-size: 1em;
-    margin:;
+    color:#333;
+    margin:0;
 }
 
 
@@ -160,7 +162,7 @@ background-image:url('Assets/globe.png');
 
 .newsimg {
     position: absolute;
-    top:145px;
+    bottom:85px;
     right:70px;
     width:120px;
     height:120px;
